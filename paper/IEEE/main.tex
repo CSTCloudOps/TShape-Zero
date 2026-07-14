@@ -1,0 +1,301 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{url}
+
+\setlength{\textfloatsep}{8pt plus 1pt minus 2pt}
+\setlength{\floatsep}{7pt plus 1pt minus 2pt}
+\setlength{\intextsep}{7pt plus 1pt minus 2pt}
+
+\newcommand{\method}{TShape-Zero+}
+\newcommand{\direct}{TShape-Zero}
+\newcommand{\pfone}{Point-F1}
+\newcommand{\efone}{Event-F1}
+\input{generated/easytsad_numbers.tex}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{\method: An Out-of-the-Box TShape for Zero-Shot KPI Anomaly Detection}
+
+\author{
+    \IEEEauthorblockN{
+        Hang Cui\IEEEauthorrefmark{1}\IEEEauthorrefmark{2},
+        Jingjing Li\IEEEauthorrefmark{1},
+        Haotian Si\IEEEauthorrefmark{1}\IEEEauthorrefmark{2},
+        Quan Zhou\IEEEauthorrefmark{1}\IEEEauthorrefmark{2},
+        Changhua Pei\IEEEauthorrefmark{1}\IEEEauthorrefmark{3},
+        Gaogang Xie\IEEEauthorrefmark{1},
+        Dan Pei\IEEEauthorrefmark{4}
+    }
+    \IEEEauthorblockA{\IEEEauthorrefmark{1}Computer Network Information Center, Chinese Academy of Sciences\\
+    \{cuihang, ljj, htsi, zhouquan, chpei, xie\}@cnic.cn}
+    \IEEEauthorblockA{\IEEEauthorrefmark{2}University of the Chinese Academy of Sciences}
+    \IEEEauthorblockA{\IEEEauthorrefmark{3}Hangzhou Institute for Advanced Study, University of Chinese Academy of Sciences}
+    \IEEEauthorblockA{\IEEEauthorrefmark{4}Tsinghua University, peidan@tsinghua.edu.cn}
+}
+
+\maketitle
+
+\begin{abstract}
+KPI anomaly detection is a first line of defense for software reliability, but a new service rarely has incident labels or time for per-metric model training. TShape is effective in its original target-trained setting. We ask a constructive artifact-engineering question: how can TShape become one reusable detector that scores an unseen KPI without benchmark-domain weight updates? We first reproduce the original effect and stress-test direct reuse under the same EasyTSAD metrics. We then propose \method{}, whose single 0.138-MiB checkpoint is trained only on a Pattern Bank of generated temporal dynamics and random context incidents. At inference, an open-box Residual Guard combines the neural shape residual with rolling-median, spectral, and robust-deviation evidence. We evaluate one frozen checkpoint on all 834 series from six industrial or public monitoring datasets (15.1 million observations), using one fixed seed and no target-label model selection. A 44-method ledger includes four official forecasting-foundation checkpoints, every baseline family in the original TShape study, source-adaptation diagnostics, and no-training controls. Pattern pretraining alone obtains macro \pfone{}/\efone{} of \DirectMacroPoint{}/\DirectMacroEvent{}; the guarded product obtains \FinalMacroPoint{}/\FinalMacroEvent{}, close to the much larger TimesFM checkpoint while preserving channel attribution. Full-size, weight, normalization, and paired-series ablations state where the neural channel helps and where the guard supplies the reliability floor. We release the model, verification ledger, CLI, and a web scorer that converts an uploaded KPI history into aligned anomaly scores and ranked suspicious points.
+\end{abstract}
+
+\begin{IEEEkeywords}
+time-series anomaly detection, replication, negative results, zero-shot learning, software reliability
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_intro_strict.pdf}
+  \caption{From target-trained TShape to one out-of-the-box detector. We preserve the original claim, stress-test direct artifact reuse, repair temporal coverage with a synthetic Pattern Bank, and guard shifted KPIs with inspectable residual evidence.}
+  \label{fig:intro}
+\end{figure}
+
+Modern software systems expose thousands of key performance indicators (KPIs), including latency, throughput, error rate, queue depth, CPU utilization, cache hit rate, and service-specific counters. Their anomaly detectors often fire before root-cause localization, incident response, rollback, or capacity control. Consequently, the detector is not an isolated machine-learning component: it is part of the operational reliability boundary. Missing an incident delays mitigation, while an unstable score stream overwhelms on-call engineers.
+
+This boundary is difficult to maintain for newly deployed services. Labels are scarce, incident distributions change after releases, and training a model for every metric is expensive at fleet scale. Industrial TSAD benchmarks report large differences across datasets, protocols, and deployment assumptions~\cite{si2024timeseriesbench,liu2024elephant,paparrizos2022tsb}. Practitioners therefore have a concrete reason to prefer a reusable checkpoint that can score an unseen KPI immediately. Recent forecasting foundation models reinforce this checkpoint-reuse expectation by advertising cross-series inference through a common prediction interface~\cite{liu2024timer,ansari2024chronos,das2024timesfm,liu2025sundial,shi2024timemoe}.
+
+TShape targets complex shapelet anomalies with convolutional patch encoding and local/global attention~\cite{cui2025tshape}. Its original paper trains on each target environment and reports strong EasyTSAD F1 and event-weighted F1. We neither dispute nor retroactively enlarge that claim. Instead, we study a realistic product requirement encouraged by checkpoint-oriented time-series systems: ship one trained model, accept an unseen KPI history, and immediately return useful anomaly scores. This paper is therefore an \emph{artifact reuse stress test plus repair protocol}, not a refutation of a zero-shot claim made by the original work.
+
+The first stress test confirms why a model class is not yet a product contract. A next-step residual can execute on any sequence, but a target-trained checkpoint has learned target-specific local shapes, patch relations, and residual scale. Under a shifted KPI, routine variation can outrank incidents. Missing checkpoints, preprocessing metadata, a scoring command, resource evidence, and failure documentation compound this model-level risk. We convert those observations into three design challenges.
+
+\textbf{Challenge 1: open-world temporal diversity.}
+KPI histories combine flat regions, trends, cycles, staircases, random walks, bursts, variance changes, and recoveries. A model trained on one operational environment cannot enumerate this space. Our Pattern Bank samples 20 temporal generators under randomized amplitude, offset, phase, slope, reversal, and noise, then injects context-only incidents while keeping the next-value target clean. This creates a benchmark-independent pretraining distribution rather than a hidden mixture of the six evaluation datasets.
+
+\textbf{Challenge 2: distribution shift.}
+An unseen service can differ in scale, noise, seasonality, and smoothness. \method{} adds a Residual Guard made of rolling-median, spectral-residual, and rolling-MAD channels. A fixed reliability budget reserves 85\% of the fused score for these transparent controls and 15\% for TShape. Each channel remains observable, making the repair falsifiable rather than hiding a strong residual baseline inside a new model name.
+
+\textbf{Challenge 3: executable artifact readiness.}
+A reusable detector is more than weights. It needs a preprocessing contract, score alignment, coverage checks, immutable metadata, resource evidence, a callable interface, and documented boundaries. Our CLI and web service invoke the same scorer and return the input trace, fused score, neural score, guard score, and top-$k$ indices. EasyTSAD's label-informed best threshold remains evaluation-only.
+
+Fig.~\ref{fig:intro} summarizes this transition. The contributions are:
+\begin{itemize}
+    \item \textbf{Replication and industrial reuse stress test.} We preserve the original target-trained claim, replay and complete its EasyTSAD evidence, and evaluate the stronger out-of-the-box requirement with explicit data-access contracts.
+    \item \textbf{The \method{} algorithmic upgrade.} We introduce benchmark-independent Pattern Bank pretraining and a residual-first guard with open-box channel attribution. Nested bank-size, normalization, pairwise-channel, and fusion-weight ablations isolate what is learned, what is guarded, and why.
+    \item \textbf{Full evidence and executable deployment.} One seed and one frozen checkpoint score all 834 series. We compare 44 configurations, publish paired uncertainty and resource evidence, and release the model, code, and interactive scorer at \url{https://github.com/CSTCloudOps/TShape-Zero}.
+\end{itemize}
+
+\section{Preliminaries and Motivation}
+
+\subsection{Time-Series Anomaly Detection}
+
+Let a univariate KPI be $x_{1:T}\in\mathbb{R}^{T}$, with labels $y_t\in\{0,1\}$ available only to retrospective evaluation. A detector returns scores $s_t\in\mathbb{R}$, where a larger value means more anomalous. A threshold $\tau$ induces $\hat y_t(\tau)=\mathbb{1}[s_t\geq\tau]$. An anomaly event $e=[a,b]$ is a maximal contiguous interval of positive labels, with length $L_e=b-a+1$ and event score $m_e=\max_{t\in e}s_t$.
+
+\textbf{One EasyTSAD protocol throughout.}
+The paper reports only the two metrics used by TShape's EasyTSAD evaluation. \texttt{PointF1PA()} replaces every event by the weighted item $(m_e,L_e,1)$ and every normal point by $(s_t,1,0)$. \texttt{EventF1PA(mode="log")} instead gives an event weight
+\begin{equation}
+  w_e=\left\lfloor \log_3(L_e+3)\right\rfloor,
+  \label{eq:event-weight}
+\end{equation}
+while a normal point retains unit weight. Each implementation sorts these weighted items by score, sweeps every candidate threshold, and reports the maximum harmonic mean of precision and recall. We call the outputs \pfone{} (F1) and \efone{} (F1-E), respectively. We macro-average valid series and report the number of all-normal series separately.
+
+This definition matters for interpretation. The threshold is selected using labels, so these metrics assess score separability under the original TShape protocol; they are not deployable automatic calibration rules. Point adjustment can also make long events easier to detect~\cite{kim2022rigorous}. We retain it because the original TShape claim uses this protocol, apply the same implementation to every score stream, and avoid mixing it with unrelated ranking or threshold metrics.
+
+\subsection{What ``Out of the Box'' Means}
+
+For target dataset $D_q$, a target-trained model estimates $\theta_q$ from $D_q^{\mathrm{train}}$. An out-of-the-box model instead ships one immutable parameter set $\theta^\star$ before $D_q$ is opened:
+\begin{equation}
+ \theta^\star \perp
+ \left(D_q^{\mathrm{train}},D_q^{\mathrm{test}},Y_q\right),
+ \qquad
+ s_q=\mathcal{S}_{\theta^\star}\!\left(x_q;\mathcal{P}_q\right).
+ \label{eq:zero-contract}
+\end{equation}
+Here $\perp$ means that no benchmark value, label, or gradient is used to fit or choose $\theta^\star$; $\mathcal{P}_q$ may use unlabeled target history for affine scaling. This is \emph{frozen-model zero-shot scoring with unlabeled context}, not a setting with no access to the sequence being scored. The same checkpoint must serve AIOPS, NAB, TODS, UCR, WSD, Yahoo, and a future unknown KPI.
+
+An out-of-the-box artifact is the tuple
+\begin{equation}
+ \mathcal{A}=(\theta,\mathcal{P},\mathcal{S},\mathcal{I},\mathcal{V},\mathcal{F}),
+ \label{eq:artifact}
+\end{equation}
+where $\mathcal{P}$ is preprocessing, $\mathcal{S}$ scoring, $\mathcal{I}$ an inference interface, $\mathcal{V}$ executable verification, and $\mathcal{F}$ a failure card. This artifact contract connects model reuse with software release engineering and complements model cards and dataset documentation~\cite{mitchell2019modelcards,gebru2021datasheets}.
+
+\subsection{TShape and the Reuse Gap}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_tshape_architecture_strict.pdf}
+  \caption{TShape next-step residual scorer. A $p=16$ history is split into four patches; convolutional shape tokens feed local and global attention, gated fusion, and a forecasting head. The squared next-value error is the anomaly score.}
+  \label{fig:tshape}
+\end{figure}
+
+TShape maps the history $w_t=x_{t-p+1:t}$ to a next-value prediction and emits
+\begin{equation}
+  T_{t+1}=\left(x_{t+1}-f_{\theta}(w_t)\right)^2.
+  \label{eq:tshape-score}
+\end{equation}
+As Fig.~\ref{fig:tshape} shows, convolutional patch encoders model short shapes, local attention models within-patch dependence, global attention connects nonadjacent patches, and a learned gate fuses both views. This interface makes checkpoint reuse technically easy: the same tensor shape produces a residual on a new KPI. It does not ensure that source-learned attention or residual scale transfers.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_motivation_strict.pdf}
+  \caption{Why an executable residual interface is not a transfer guarantee. A frozen predictor can preserve its API while shifted shapes alter attention and make normal and anomalous residuals overlap. Pattern pretraining broadens shape exposure; the Residual Guard supplies an inspectable fallback.}
+  \label{fig:motivation}
+\end{figure}
+
+Fig.~\ref{fig:motivation} illustrates the failure mode. The original target-trained model sees the target's scale and recurring patterns. A universal checkpoint sees a generated training distribution $P_{\mathrm{PB}}$, while an unseen KPI follows $P_q$; generally
+\begin{equation}
+ P_q(w_t,x_{t+1})\neq P_{\mathrm{PB}}(w_t,x_{t+1}).
+ \label{eq:shift}
+\end{equation}
+The code continues to run, while anomaly-score ordering changes. This distinction is precisely what a reuse stress test should expose.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig03_easytsad_protocol_radar.pdf}
+  \caption{Protocol-separated TShape evidence. The original paper reports five target-trained datasets; reproduction combines immutable score replay with faithful completion; Strict Zero evaluates one synthetic-only Pattern checkpoint unchanged on all six datasets. Yahoo is an artifact extension.}
+  \label{fig:radar}
+\end{figure}
+
+The radar view in Fig.~\ref{fig:radar} prevents a misleading one-number comparison. It shows (i) the five values reported by the original paper, (ii) a provenance-preserving six-dataset reproduction from stored replay plus faithful re-execution, and (iii) the single Pattern-only checkpoint before guarding. The polygons describe different claims and are never subtracted as if their training scopes were identical.
+
+\input{generated/easytsad_reproduction_table.tex}
+
+The reproduction restores the original target-trained comparison without borrowing it as zero-shot evidence. Stored scores are replayed when complete; missing AIOPS scores are completed with the original per-series recipe; TODS is re-executed against the packaged labels. Yahoo has no original-paper cell and is marked as an extension. In contrast, the Strict Zero column uses one synthetic-only checkpoint unchanged on all six targets. This separation explains why a lower strict score can motivate a repair without contradicting TShape's published in-distribution claim.
+
+\begin{table}[t]
+\caption{Target-context harness diagnostic (Point-F1 / Event-F1). These three-epoch variants test preprocessing and window sensitivity; they are not zero-shot competitors.}
+\label{tab:harness-diagnostic}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lccc}
+\toprule
+Dataset & Diff-1, $p=16$ & Raw, $p=16$ & Diff-1, $p=32$ \\
+\midrule
+AIOPS & 0.886 / 0.781 & 0.664 / 0.542 & 0.870 / 0.752 \\
+NAB   & 0.998 / 0.890 & 0.997 / 0.908 & 0.998 / 0.911 \\
+TODS  & 0.710 / 0.638 & 0.492 / 0.249 & 0.671 / 0.567 \\
+UCR   & 0.692 / 0.401 & 0.686 / 0.406 & 0.696 / 0.412 \\
+WSD   & 0.962 / 0.866 & 0.977 / 0.903 & 0.959 / 0.855 \\
+Yahoo & 0.783 / 0.741 & 0.762 / 0.756 & 0.891 / 0.880 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:harness-diagnostic} addresses a different validity question: does the shared implementation make even target-trained TShape collapse? It does not. Training MSE decreases in all 18 dataset--variant runs, while the best recipe changes by target. First differencing substantially improves AIOPS and TODS, raw values are better on WSD, and $p=32$ is strongest on Yahoo but not universally. These reversals explain why a standalone score can diverge from an original-paper cell without implying a broken optimizer: preprocessing, context length, split provenance, and event scoring are part of the executable artifact contract. We retain diff-1 and $p=16$ because they match the documented product scorer, and mark all target-context diagnostics as ineligible for the frozen-checkpoint ranking.
+
+\begin{table}[t]
+\caption{Artifact reuse audit and implemented repair.}
+\label{tab:audit}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.25\columnwidth}p{0.18\columnwidth}p{0.45\columnwidth}}
+\toprule
+Contract & TShape artifact & \method{} release \\
+\midrule
+Trained checkpoint & Missing & Versioned state dict and metadata \\
+Inference entry point & Partial & CLI, web, and JSON score output \\
+Preprocessing & Implicit & Difference, scale fit, $p=16$ \\
+Score semantics & Neural residual & Fused and per-channel traces \\
+Training provenance & Target-specific & Synthetic-only checkpoint manifest \\
+Scalability evidence & Partial & 834-series coverage and footprint \\
+Failure evidence & Missing & Ablations, paired tests, failure card \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:audit} separates an artifact finding from an algorithmic finding. Missing checkpoint and interface contracts concern release readiness. A lower score from one strict reusable checkpoint concerns transfer. \method{} addresses both, but we report them as different results.
+
+\section{The \method{} Framework}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_framework_strict.pdf}
+  \caption{End-to-end \method{} contract. Offline Pattern Bank generation produces one frozen TShape checkpoint without benchmark training. Online batch scoring applies documented preprocessing, computes neural and guard channels, fuses fixed weights, and returns aligned open-box evidence through CLI or web.}
+  \label{fig:framework}
+\end{figure}
+
+Fig.~\ref{fig:framework} separates offline learning, target scoring, and product output. This separation makes each assumption reviewable: what enters the checkpoint, what uses unlabeled target context, how channels are normalized, and what an operator receives.
+
+\subsection{Shared Preprocessing and Shape Channel}
+
+For a history $x$, the scorer first applies a drop-first difference. In benchmark evaluation, min--max parameters are fitted on the series' unlabeled train history and applied to test; in the product, a user may provide a separate calibration history, otherwise the uploaded history supplies the affine scale. This target context changes no model weight. The product restores the differencing warm-up position with the minimum score so every returned index aligns with the raw upload.
+
+We retain the original TShape architecture with $p=16$, four size-4 patches, a convolutional shape encoder, local/global attention, and squared next-value residuals. The Pattern-only channel is
+\begin{equation}
+ T_t^{\mathrm{PB}}=
+ \left(z_t-f_{\theta^\star_{\mathrm{PB}}}(z_{t-p:t-1})\right)^2 ,
+ \label{eq:pattern-score}
+\end{equation}
+where $z$ is the preprocessed target history and $\theta^\star_{\mathrm{PB}}$ is identical for all target datasets. The raw and normalized $T_t^{\mathrm{PB}}$ remain separately available in every product response.
+
+\subsection{Pattern Bank Pretraining}
+
+The Pattern Bank addresses missing temporal diversity without using benchmark samples. Its 20 \emph{normal} generators cover flat, polynomial, exponential, oscillatory, piecewise, stochastic, autoregressive, seasonal, growth, drift, and periodic-pulse dynamics. The taxonomy crosses four operational axes---level/trend, periodic structure, stochastic memory, and regime composition---while incident operators are kept orthogonal to the normal generator. It is a declared coverage prior, not a collection tuned against target labels. Eight randomized variants per family give 160 prototypes. A sampled prototype is transformed by amplitude, offset, reversal, slope, phase, and Gaussian noise. With probability 0.35, one of six incident operators injects a spike, dip, level shift, variance change, drift, or burst into the \emph{context only}. For clean prototype $u_{1:p+1}$, the denoising pair is
+\begin{equation}
+ \tilde w=u_{1:p}+\delta_{1:p},\qquad
+ \tilde y=u_{p+1},
+ \label{eq:pattern-pair}
+\end{equation}
+so the model learns continuation of the clean shape rather than reconstruction of the injected disturbance.
+
+The release bank contains 60,000 generated windows. To test sample efficiency without changing motif composition, fraction $c\in\{0.1,0.2,\ldots,1.0\}$ uses the first $60{,}000c$ draws from one seeded stream. Thus the 10\% bank is a strict prefix of the 20\% bank, and so on; all levels contain all 20 generators in the same expected proportions. This design tests \emph{bank size}, not an arbitrary order of hand-added motif families. Every checkpoint trains with Adam ($10^{-3}$, batch 256) for at most 30 epochs and stops when training loss fails to improve by $10^{-5}$ for three consecutive epochs. The 100\% checkpoint is fixed before any target score is inspected and serves all six benchmarks.
+
+\subsection{Residual Guard and Fusion}
+
+For each target history, three label-free, no-training channels provide a reliability floor. $M_t$ is absolute deviation from the previous $p$-point rolling median. $S_t$ is spectral-residual saliency obtained by removing the smoothed log-amplitude spectrum. $D_t$ divides the rolling-median residual by a rolling MAD estimate. Let $N(\cdot)$ denote per-history min--max score normalization. The matched residual-only guard is
+\begin{equation}
+ G_t=\frac{0.55N(M_t)+0.25N(S_t)+0.05N(D_t)}{0.85}.
+ \label{eq:guard}
+\end{equation}
+The release reserves a fixed 15\% neural budget and 85\% guard budget:
+\begin{equation}
+ \begin{aligned}
+ s_t^{+} &=0.15N(T_t^{\mathrm{PB}})+0.85G_t \\
+ &=0.15N(T_t^{\mathrm{PB}})+0.55N(M_t) \\
+ &\quad+0.25N(S_t)+0.05N(D_t).
+ \end{aligned}
+ \label{eq:fusion}
+\end{equation}
+The weights are a predeclared reliability budget, not a benchmark-optimized solution. Weight sensitivity evaluates $\alpha\in\{0,0.05,0.10,0.15,0.25,0.50,1\}$, with the three guard weights renormalized inside $(1-\alpha)G_t$. Pairwise TShape+median and TShape+spectral variants test complementarity; a rank-normalized variant tests whether results depend on min--max magnitude. The matched comparison
+\begin{equation}
+ s_t^{+}-G_t=0.15\left(N(T_t^{\mathrm{PB}})-G_t\right)
+ \label{eq:marginal}
+\end{equation}
+isolates the neural channel's marginal contribution after the exact guard is held fixed.
+
+The present artifact scores complete historical sequences. Its normalization therefore supports offline triage and batch reliability analysis, not a claim of causal online thresholding. A streaming deployment would replace $N$ with a rolling source-calibrated transform; we leave that contract explicit instead of silently using future score extrema.
+
+\subsection{Reviewable Product Contract}
+
+The scorer accepts comma-, whitespace-, or newline-separated values. It returns the input trace, $s^+_t$, $T_t^{\mathrm{PB}}$, $G_t$, and top-$k$ indices. Metadata records the Pattern Bank version, size, seed, stopping rule, preprocessing, weights, and model hash. The web view invokes the same scorer as the CLI. Labels are optional retrospective case metadata and never required for scoring.
+
+\section{Related Work}
+
+\textbf{TSAD evaluation and reliability.}
+Benchmark studies show that dataset quality, point adjustment, and aggregation can reverse anomaly-detector rankings~\cite{wu2021benchmarks,paparrizos2022volume,liu2024elephant}. TimeSeriesBench contributes industrial data, training schemas, and the EasyTSAD implementation used by the original TShape study~\cite{si2024timeseriesbench}. We preserve that protocol end to end and expose valid-series counts rather than combining incompatible metrics.
+
+\textbf{Target-trained anomaly detectors.}
+The original comparison spans classical local-discord and forecasting methods, reconstruction networks, frequency models, and attention architectures. Representative learned methods include USAD~\cite{audibert2020usad}, TranAD~\cite{tuli2022tranad}, Anomaly Transformer~\cite{xu2022anomaly}, TimesNet~\cite{wu2023timesnet}, OFA~\cite{zhou2023ofa}, FITS~\cite{zhou2024fits}, FCVAE~\cite{jiang2024fcvae}, and KAN-AD~\cite{li2025kanad}. Their published configurations are not uniformly packaged as frozen univariate scorers. We therefore distinguish official checkpoint executions from family adapters and source-adaptation diagnostics in every table.
+
+\textbf{Foundation forecasting and zero-shot reuse.}
+Timer, Chronos, TimesFM, Sundial, and Time-MoE broaden reusable time-series prediction~\cite{liu2024timer,ansari2024chronos,das2024timesfm,liu2025sundial,shi2024timemoe}. We execute four released checkpoints and convert chunk forecasts to squared residual scores without target fitting. Official TimeMoE-50M failed the study's practical ten-minute optional-checkpoint screen and is excluded rather than reported with its incomplete 240/834-series output; a separately marked family adapter remains in the ledger. Recent work targets zero-shot anomaly detection directly through pretrained predictors or cross-modal models~\cite{lan2025timercd,yang2026vetime}. Our contribution is complementary: it stress-tests and repairs a concrete TSAD artifact, and makes release maturity a first-class software reliability result.
+
+\input{sections/evaluation_strict.tex}
+
+\input{sections/deployment_strict.tex}
+
+\section{Conclusion}
+
+We preserve TShape's original target-trained claim and turn the stronger out-of-the-box requirement into a constructive artifact repair. \method{} trains one compact TShape checkpoint on a benchmark-independent generated Pattern Bank, protects shifted KPIs with an inspectable Residual Guard, and ships preprocessing, scoring, verification, CLI, and web contracts together. Under one EasyTSAD protocol, the frozen checkpoint scores all 834 series and reaches macro \pfone{}/\efone{} of \FinalMacroPoint{}/\FinalMacroEvent{}. The guard supplies most average robustness; the neural channel adds bounded event-level value on identifiable regimes, and the paper exposes both facts through matched ablations. Strong residual and foundation checkpoints prevent a universal-SOTA claim, while the 0.138-MiB footprint and reproducible deployment case establish practical release value. The broader reliability lesson is concrete: reusable anomaly detection requires not only model weights, but also data-access provenance, transparent fallback behavior, metric-compatible evidence, coverage, and an executable product contract.
+
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

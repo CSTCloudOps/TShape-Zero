@@ -1,0 +1,28 @@
+{
+  "seed": 20260704,
+  "targets": [
+    "AIOPS",
+    "NAB",
+    "TODS",
+    "UCR",
+    "WSD",
+    "Yahoo"
+  ],
+  "strict_zero_shot": true,
+  "checkpoint_training_corpus": "synthetic Pattern Bank only",
+  "checkpoint_sha256_scope": "recorded by release packager",
+  "device": "cpu",
+  "eval_batch_size": 16384,
+  "eval_series": 834,
+  "seconds": 1336.6297121047974,
+  "methods": [
+    "StrictGuardOnly",
+    "StrictTShapeMedian",
+    "StrictTShapeSpectral",
+    "StrictZeroPlusAlpha005",
+    "StrictZeroPlusAlpha010",
+    "StrictZeroPlusAlpha025",
+    "StrictZeroPlusAlpha050",
+    "StrictZeroPlusRank015"
+  ]
+}

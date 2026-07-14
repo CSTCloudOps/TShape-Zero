@@ -1,0 +1,668 @@
+[
+  {
+    "seconds": 37.1751070022583,
+    "windows": 60000,
+    "source_counts": {
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03288372107545535,
+      0.027165666031837465,
+      0.026653391164541244,
+      0.026210220548510552,
+      0.025684491821130116
+    ],
+    "seed": 20260704,
+    "target": "AIOPS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 73.6020131111145,
+    "eval_series": 29
+  },
+  {
+    "seconds": 32.156949043273926,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03211944377223651,
+      0.02730253381331762,
+      0.025892236330111822,
+      0.025499607035517693,
+      0.024931130775809288
+    ],
+    "seed": 20260704,
+    "target": "NAB",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 3.935342311859131,
+    "eval_series": 10
+  },
+  {
+    "seconds": 33.504709243774414,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03186412682930628,
+      0.02667545513510704,
+      0.025570813083648683,
+      0.024844591941436133,
+      0.024391057048241297
+    ],
+    "seed": 20260704,
+    "target": "TODS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 2.0087690353393555,
+    "eval_series": 15
+  },
+  {
+    "seconds": 35.49454402923584,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.04051979204614957,
+      0.0270941850622495,
+      0.026016145181655882,
+      0.024821702073017756,
+      0.02413308061858018
+    ],
+    "seed": 20260704,
+    "target": "UCR",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 202.673730134964,
+    "eval_series": 203
+  },
+  {
+    "seconds": 23.295715808868408,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.031165185688932735,
+      0.02663497834801674,
+      0.025596147932608924,
+      0.024215760998924574,
+      0.023872969555854797
+    ],
+    "seed": 20260704,
+    "target": "WSD",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "Yahoo"
+    ],
+    "eval_seconds": 94.7879889011383,
+    "eval_series": 210
+  },
+  {
+    "seconds": 20.82228422164917,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03226105499267578,
+      0.026115016203125316,
+      0.02441734238266945,
+      0.024148071964581807,
+      0.0235348550538222
+    ],
+    "seed": 20260704,
+    "target": "Yahoo",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD"
+    ],
+    "eval_seconds": 13.691091775894165,
+    "eval_series": 367
+  },
+  {
+    "seconds": 19.937505960464478,
+    "windows": 60000,
+    "source_counts": {
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03288722136219342,
+      0.02645966509580612,
+      0.0252810747196277,
+      0.024147003268202145,
+      0.023244552451372146
+    ],
+    "seed": 20260705,
+    "target": "AIOPS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 49.11308574676514,
+    "eval_series": 29
+  },
+  {
+    "seconds": 19.22646689414978,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.031064714710911115,
+      0.026915450590848922,
+      0.02613034176826477,
+      0.025399939415852228,
+      0.02481550271312396
+    ],
+    "seed": 20260705,
+    "target": "NAB",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 1.1891870498657227,
+    "eval_series": 10
+  },
+  {
+    "seconds": 20.544430017471313,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03798760277628899,
+      0.02616619343161583,
+      0.025340644241372744,
+      0.02411477380990982,
+      0.023046602626641592
+    ],
+    "seed": 20260705,
+    "target": "TODS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 1.4287757873535156,
+    "eval_series": 15
+  },
+  {
+    "seconds": 21.065409898757935,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.029895678599675495,
+      0.02465904077490171,
+      0.023900142670671146,
+      0.02333216066757838,
+      0.022688210074603556
+    ],
+    "seed": 20260705,
+    "target": "UCR",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 131.67924523353577,
+    "eval_series": 203
+  },
+  {
+    "seconds": 20.073997259140015,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.04062634609937668,
+      0.02620674971838792,
+      0.025540454535682995,
+      0.02503951791524887,
+      0.02401007276972135
+    ],
+    "seed": 20260705,
+    "target": "WSD",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "Yahoo"
+    ],
+    "eval_seconds": 70.13060998916626,
+    "eval_series": 210
+  },
+  {
+    "seconds": 23.43987274169922,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.051295201951265336,
+      0.026277879763642948,
+      0.024508290482560792,
+      0.02432344576716423,
+      0.023634561131397884
+    ],
+    "seed": 20260705,
+    "target": "Yahoo",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD"
+    ],
+    "eval_seconds": 9.03914189338684,
+    "eval_series": 367
+  },
+  {
+    "seconds": 21.765018939971924,
+    "windows": 60000,
+    "source_counts": {
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03764045664072037,
+      0.029524365995327633,
+      0.02733378027677536,
+      0.02591762424806754,
+      0.025978019003073373
+    ],
+    "seed": 20260706,
+    "target": "AIOPS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 51.886394739151,
+    "eval_series": 29
+  },
+  {
+    "seconds": 20.661526918411255,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.035087890434265134,
+      0.029281568775574366,
+      0.02819067504107952,
+      0.027511416612068813,
+      0.026664188131690025
+    ],
+    "seed": 20260706,
+    "target": "NAB",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 1.4947881698608398,
+    "eval_series": 10
+  },
+  {
+    "seconds": 19.673771142959595,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.035919833401838935,
+      0.028518349196513495,
+      0.0269510280251503,
+      0.026151085072755813,
+      0.02516868415673574
+    ],
+    "seed": 20260706,
+    "target": "TODS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 1.1029119491577148,
+    "eval_series": 15
+  },
+  {
+    "seconds": 18.362779140472412,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.04732693865299225,
+      0.028896370855967204,
+      0.027498389459649723,
+      0.02651717696636915,
+      0.02576679453452428
+    ],
+    "seed": 20260706,
+    "target": "UCR",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 132.17102003097534,
+    "eval_series": 203
+  },
+  {
+    "seconds": 19.928773880004883,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.043611122834682464,
+      0.03049526349703471,
+      0.028427544194459916,
+      0.02745603425701459,
+      0.02647683389385541
+    ],
+    "seed": 20260706,
+    "target": "WSD",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "Yahoo"
+    ],
+    "eval_seconds": 60.54384708404541,
+    "eval_series": 210
+  },
+  {
+    "seconds": 19.640601873397827,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 160,
+      "pattern_bank_fraction_pct": 100,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.03487836591601372,
+      0.02808590568304062,
+      0.027267509798208873,
+      0.02637427038749059,
+      0.026066635541121166
+    ],
+    "seed": 20260706,
+    "target": "Yahoo",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD"
+    ],
+    "eval_seconds": 8.380500793457031,
+    "eval_series": 367
+  }
+]

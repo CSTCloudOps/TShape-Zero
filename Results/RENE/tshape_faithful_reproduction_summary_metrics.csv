@@ -1,0 +1,7 @@
+dataset,method,series,rows,seeds,points,valid_point_pa_series,valid_event_pa_series,zero_anomaly_series,coverage_ratio,stored_series,reexecuted_series,point_f1_pa,point_f1_pa_std,event_f1_pa_log,event_f1_pa_log_std
+AIOPS,TShape-faithful-reproduction,29,29,2,3073092,29,29,0,1.000000,4,25,0.868710,0.140729,0.736083,0.175876
+NAB,TShape-faithful-reproduction,10,10,1,79158,10,10,0,1.000000,10,0,0.998387,0.003019,0.922756,0.134161
+TODS,TShape-faithful-reproduction,15,15,1,74760,15,15,0,1.000000,0,15,0.706102,0.129567,0.605127,0.095481
+UCR,TShape-faithful-reproduction,203,203,1,7779291,201,201,2,1.000000,203,0,0.819411,0.295331,0.560152,0.407785
+WSD,TShape-faithful-reproduction,210,210,1,3826177,161,161,49,1.000000,210,0,0.952524,0.065223,0.821868,0.176254
+Yahoo,TShape-faithful-reproduction,367,367,1,280687,352,352,15,1.000000,367,0,0.807939,0.195569,0.791030,0.204383

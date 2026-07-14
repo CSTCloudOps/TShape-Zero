@@ -1,0 +1,206 @@
+[
+  {
+    "seconds": 2.9058549404144287,
+    "windows": 60000,
+    "source_counts": {
+      "NAB": 12000,
+      "TODS": 12000,
+      "UCR": 12000,
+      "WSD": 12000,
+      "Yahoo": 12000
+    },
+    "loss": [
+      0.04635998703663548,
+      0.04622448500394821,
+      0.3905665915966034,
+      10.42259903564453,
+      106.26982127278646
+    ],
+    "best_epoch": 2,
+    "best_source_loss": 0.04622448500394821,
+    "restored_best_source_state": true,
+    "method": "USAD-style",
+    "seed": 20260704,
+    "target": "AIOPS",
+    "sources": [
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "training_protocol": "zero_shot",
+    "eval_seconds": 4.839092016220093,
+    "eval_series": 29
+  },
+  {
+    "seconds": 1.9874041080474854,
+    "windows": 60000,
+    "source_counts": {
+      "AIOPS": 12000,
+      "TODS": 12000,
+      "UCR": 12000,
+      "WSD": 12000,
+      "Yahoo": 12000
+    },
+    "loss": [
+      0.04740094860171278,
+      0.03029395709633827,
+      0.3924101191361745,
+      12.373012228393554,
+      121.69501418457031
+    ],
+    "best_epoch": 2,
+    "best_source_loss": 0.03029395709633827,
+    "restored_best_source_state": true,
+    "method": "USAD-style",
+    "seed": 20260704,
+    "target": "NAB",
+    "sources": [
+      "AIOPS",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "training_protocol": "zero_shot",
+    "eval_seconds": 0.13863182067871094,
+    "eval_series": 10
+  },
+  {
+    "seconds": 2.9260971546173096,
+    "windows": 60000,
+    "source_counts": {
+      "AIOPS": 12000,
+      "NAB": 12000,
+      "UCR": 12000,
+      "WSD": 12000,
+      "Yahoo": 12000
+    },
+    "loss": [
+      0.046023298522581656,
+      0.02443251551091671,
+      0.2724635316212972,
+      9.700355479939779,
+      115.7021920328776
+    ],
+    "best_epoch": 2,
+    "best_source_loss": 0.02443251551091671,
+    "restored_best_source_state": true,
+    "method": "USAD-style",
+    "seed": 20260704,
+    "target": "TODS",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "training_protocol": "zero_shot",
+    "eval_seconds": 0.18132901191711426,
+    "eval_series": 15
+  },
+  {
+    "seconds": 3.7640738487243652,
+    "windows": 60000,
+    "source_counts": {
+      "AIOPS": 12000,
+      "NAB": 12000,
+      "TODS": 12000,
+      "WSD": 12000,
+      "Yahoo": 12000
+    },
+    "loss": [
+      0.044830930098394554,
+      0.00711044059197108,
+      0.3207355623722076,
+      12.88162047220866,
+      126.9601192220052
+    ],
+    "best_epoch": 2,
+    "best_source_loss": 0.00711044059197108,
+    "restored_best_source_state": true,
+    "method": "USAD-style",
+    "seed": 20260704,
+    "target": "UCR",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "WSD",
+      "Yahoo"
+    ],
+    "training_protocol": "zero_shot",
+    "eval_seconds": 14.579676151275635,
+    "eval_series": 203
+  },
+  {
+    "seconds": 1.7188148498535156,
+    "windows": 60000,
+    "source_counts": {
+      "AIOPS": 12000,
+      "NAB": 12000,
+      "TODS": 12000,
+      "UCR": 12000,
+      "Yahoo": 12000
+    },
+    "loss": [
+      0.04522813441194594,
+      0.027816488806406657,
+      0.33691665544509886,
+      11.57009457804362,
+      120.38001603190104
+    ],
+    "best_epoch": 2,
+    "best_source_loss": 0.027816488806406657,
+    "restored_best_source_state": true,
+    "method": "USAD-style",
+    "seed": 20260704,
+    "target": "WSD",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "Yahoo"
+    ],
+    "training_protocol": "zero_shot",
+    "eval_seconds": 8.003580808639526,
+    "eval_series": 210
+  },
+  {
+    "seconds": 3.386248826980591,
+    "windows": 60000,
+    "source_counts": {
+      "AIOPS": 12000,
+      "NAB": 12000,
+      "TODS": 12000,
+      "UCR": 12000,
+      "WSD": 12000
+    },
+    "loss": [
+      0.04406175808906555,
+      0.02787910016179085,
+      0.3607384218851725,
+      11.398594135538737,
+      108.52769611002604
+    ],
+    "best_epoch": 2,
+    "best_source_loss": 0.02787910016179085,
+    "restored_best_source_state": true,
+    "method": "USAD-style",
+    "seed": 20260704,
+    "target": "Yahoo",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD"
+    ],
+    "training_protocol": "zero_shot",
+    "eval_seconds": 2.3670802116394043,
+    "eval_series": 367
+  }
+]

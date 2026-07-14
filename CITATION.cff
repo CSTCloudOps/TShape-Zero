@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite the accompanying ISSRE RENE paper."
+title: "TShape-Zero+: An Out-of-the-Box TShape for Zero-Shot KPI Anomaly Detection"
+type: software
+version: "2026.07"
+date-released: 2026-07-15
+license: MIT
+repository-code: "https://github.com/CSTCloudOps/TShape-Zero"
+authors:
+  - family-names: Cui
+    given-names: Hang
+  - family-names: Li
+    given-names: Jingjing
+  - family-names: Si
+    given-names: Haotian
+  - family-names: Zhou
+    given-names: Quan
+  - family-names: Pei
+    given-names: Changhua
+  - family-names: Xie
+    given-names: Gaogang
+  - family-names: Pei
+    given-names: Dan

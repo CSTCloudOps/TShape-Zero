@@ -1,0 +1,5 @@
+numpy==1.26.4
+torch==2.12.1
+transformers==4.40.1
+chronos-forecasting==1.5.3
+timesfm==2.0.0

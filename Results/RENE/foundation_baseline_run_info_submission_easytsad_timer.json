@@ -1,0 +1,13 @@
+[
+  {
+    "method": "Timer-base-84m",
+    "model": "thuml/timer-base-84m",
+    "load_seconds": 1.3913459777832031,
+    "context_length": 384,
+    "prediction_length": 96,
+    "batch_size": 64,
+    "seed": 20260704,
+    "device": "cpu",
+    "local_files_only": true
+  }
+]

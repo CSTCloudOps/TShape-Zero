@@ -1,0 +1,7 @@
+dataset,protocol,method,f1,f1_event,notes
+AIOPS,Original reported EasyTSAD,TShape,0.9263,0.8049,Transcribed from the original TShape paper table
+NAB,Original reported EasyTSAD,TShape,0.9982,0.9186,Transcribed from the original TShape paper table
+TODS,Original reported EasyTSAD,TShape,0.9085,0.8561,Transcribed from the original TShape paper table
+UCR,Original reported EasyTSAD,TShape,0.8493,0.5915,Transcribed from the original TShape paper table
+WSD,Original reported EasyTSAD,TShape,0.9829,0.9137,Transcribed from the original TShape paper table
+Yahoo,Artifact extension,TShape,N/A,N/A,Yahoo is present in the local artifact but not in the original five-benchmark table

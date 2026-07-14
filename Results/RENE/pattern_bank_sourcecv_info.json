@@ -1,0 +1,25 @@
+{
+  "selection_metric": "source-dataset mean of PointF1PA and EventF1PA(log)",
+  "selection_channel": "unfused Pattern-TShape",
+  "target_labels_used_for_selection": false,
+  "fractions": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "seeds": [
+    20260704,
+    20260705,
+    20260706
+  ],
+  "release_fraction": 0.1,
+  "release_source_utility": 0.7822745000000001,
+  "release_scope": "future unseen KPI after all six benchmark tasks are complete"
+}

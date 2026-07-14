@@ -1,0 +1,7 @@
+dataset,method,series,valid_event_series,valid_point_series,seeds,coverage_ratio,easytsad_event_f1_log,easytsad_event_f1_log_std,easytsad_point_f1_pa,easytsad_point_f1_pa_std
+AIOPS,Direct TShape-Zero (unrepaired) EasyTSAD replay,29,29,29,1,1.000000,0.768656,0.164355,0.870431,0.135414
+NAB,Direct TShape-Zero (unrepaired) EasyTSAD replay,10,10,10,1,1.000000,0.907489,0.108090,0.998330,0.002091
+TODS,Direct TShape-Zero (unrepaired) EasyTSAD replay,15,15,15,1,1.000000,0.618372,0.153812,0.693578,0.176389
+UCR,Direct TShape-Zero (unrepaired) EasyTSAD replay,203,201,201,1,1.000000,0.363671,0.438165,0.618884,0.383265
+WSD,Direct TShape-Zero (unrepaired) EasyTSAD replay,210,161,161,1,1.000000,0.879338,0.213560,0.958089,0.124064
+Yahoo,Direct TShape-Zero (unrepaired) EasyTSAD replay,367,352,352,1,1.000000,0.665050,0.336338,0.675379,0.332920

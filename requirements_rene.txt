@@ -1,0 +1,7 @@
+numpy==1.26.4
+torch==2.0.0
+torchinfo==1.8.0
+matplotlib==3.9.4
+EasyTSAD==0.3.0.2
+chronos-forecasting==1.5.3
+transformers==4.48.3

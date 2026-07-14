@@ -1,0 +1,162 @@
+[
+  {
+    "method": "SubLOFAdapter",
+    "source": "EasyTSAD SubLOF family zero-shot scoring adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 32.001625776290894,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "SANDAdapter",
+    "source": "EasyTSAD SAND family streaming-discord adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 18.022654056549072,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "MatrixProfileAdapter",
+    "source": "Matrix Profile family full-series discord adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 11.323668956756592,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "ARAdapter",
+    "source": "EasyTSAD AR family causal forecasting adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 15.848461151123047,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "LSTMADAdapter",
+    "source": "EasyTSAD LSTMAD family causal-memory adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 32.52844595909119,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "AEAdapter",
+    "source": "EasyTSAD AE family reconstruction adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 13.881777286529541,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "EncDecADAdapter",
+    "source": "EasyTSAD EncDecAD family reconstruction adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 23.170793056488037,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "SRCNNAdapter",
+    "source": "EasyTSAD SRCNN family spectral-residual adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 16.641952991485596,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "TFADAdapter",
+    "source": "EasyTSAD TFAD family time-frequency adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 30.652549266815186,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  },
+  {
+    "method": "DonutAdapter",
+    "source": "EasyTSAD Donut family robust-reconstruction adapter",
+    "seed": 20260704,
+    "datasets": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "seconds": 42.91858410835266,
+    "eval_series": 834,
+    "adapter_kind": "local-standardized-residual"
+  }
+]

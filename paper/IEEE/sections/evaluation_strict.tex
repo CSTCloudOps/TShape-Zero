@@ -1,0 +1,169 @@
+\section{Evaluation}
+
+\subsection{Research Questions}
+
+The evaluation follows the dependencies of the released detector. \textbf{RQ1} asks whether one frozen \method{} checkpoint is effective relative to no-fit controls, official forecasting-foundation checkpoints, and the broader TShape baseline ledger. \textbf{RQ2} measures how Pattern Bank size changes optimization and EasyTSAD F1 on each target. \textbf{RQ3} isolates the failures repaired by the Residual Guard and the marginal value that remains attributable to TShape. \textbf{RQ4} examines the effectiveness--footprint tradeoff and the learned attention behavior on a real incident. All questions use the same two metrics defined in Section~II-A.
+
+\subsection{Experimental Setup}
+
+\begin{table}[t]
+\caption{Full-coverage benchmark families. ``Ano.'' is the median anomalous-point ratio per series.}
+\label{tab:data}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{lrrrr}
+\toprule
+Dataset & Series & Test points & Med. length & Med. ano. \\
+\midrule
+AIOPS & 29 & 3,073,556 & 131,795 & 1.269\% \\
+NAB & 10 & 79,318 & 7,928 & 6.581\% \\
+TODS & 15 & 75,000 & 5,000 & 5.360\% \\
+UCR & 203 & 7,782,539 & 22,826 & 0.643\% \\
+WSD & 210 & 3,829,537 & 18,236 & 0.310\% \\
+Yahoo & 367 & 286,559 & 840 & 0.422\% \\
+\midrule
+Total & 834 & 15,126,509 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Datasets.}
+Table~\ref{tab:data} contains 15.1 million observations from six distinct families. AIOPS comprises production KPIs from large Internet services, while WSD contains high-frequency Web-service KPIs; both directly represent software operations. NAB includes real streaming cloud, traffic, advertisement, and server-like signals~\cite{ahmad2017nab}. UCR contributes heterogeneous expert-labeled rare events, TODS contributes controlled anomaly variation, and Yahoo contributes real and synthetic Webscope streams. The original TShape study reports the first five; Yahoo is an artifact extension. The shared first-difference contract consumes one warm-up point per series, leaving 15,125,675 scored points. UCR, WSD, and Yahoo contain 2, 49, and 15 all-normal test series. They remain in coverage and resource totals but cannot define F1.
+
+\textbf{Methods and access contracts.}
+The main ledger contains 44 executable configurations. N marks no-fit residual controls; F marks released foundation checkpoints executed without target fitting; S marks our strict synthetic-only checkpoints; A marks source-adaptation diagnostics; X marks full-coverage family adapters; T marks a target-context diagnostic; and B marks ablations. Only N/F/S rows participate in the red/blue deployment ranking. This distinction is essential: an adapter tests a scoring family under the common interface but is not represented as the original authors' checkpoint.
+
+The N group contains persistence, rolling mean, rolling median, spectral residual, and rolling MAD. The F group executes Chronos-Bolt-Tiny, Timer-base-84M, TimesFM-2.5-200M, and Sundial-base-128M directly; their preceding-context forecasts are converted to squared residual scores. Context/horizon pairs are 64/64, 384/96, 384/96, and 720/720. Official TimeMoE-50M exceeded the predeclared ten-minute optional-checkpoint screen and is not reported partially. A separately marked TimeMoE family adapter remains an X row. The ledger also retains every family represented in the original TShape comparison, including SubLOF, SAND, Matrix Profile, AR, LSTMAD, AE, EncDecAD, SRCNN, Anomaly Transformer, TFAD, TranAD, Donut, FCVAE, TimesNet, OFA, FITS, and KAN-AD.
+
+\textbf{Execution and statistics.}
+Every included method scores 834/834 series. All experiments use seed 20260704 on an 8-core Apple M3 with 16~GB unified memory. TShape uses PyTorch 2.0.0 with MPS, training batch 256, evaluation batch 2,048, and dense stride-one inference. The final Pattern checkpoint trains on all 60,000 generated windows with Adam, a maximum of 30 epochs, and patience-three early stopping. Labels are opened only after each score stream is frozen. For \method{} minus a comparator, the analysis unit is a series. We report mean paired difference and a 10,000-resample percentile bootstrap 95\% interval, together with wins, losses, ties, and an exact two-sided sign test in the artifact. These intervals measure cross-series heterogeneity under the fixed run; one seed does not establish training-seed stability.
+
+The optimized metric adapter was checked against EasyTSAD 0.3.0.2 on 16 boundary traces and 200 randomized traces, including terminal events, tied scores, all-normal inputs, single-point events, and varying event lengths. \pfone{}, \efone{}, precision, recall, and selected thresholds matched exactly. Every result row exposes valid-series counts and coverage.
+
+\subsection{RQ1: Overall Performance}
+
+\input{generated/easytsad_main_table.tex}
+
+Table~\ref{tab:all-easytsad} is the primary result. It deliberately keeps all completed methods and all six targets visible while separating their data-access contracts. The red and blue values answer a narrow, reproducible question: among methods that require no target fitting, which score streams are strongest under the common EasyTSAD protocol? Adapter rows broaden the diagnostic landscape but cannot win that ranking.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_overall.pdf}
+  \caption{Macro performance of directly deployable N/F/S methods. Each segment connects a method's \efone{} (square) and \pfone{} (circle); the complete per-dataset ledger and access status appear in Table~\ref{tab:all-easytsad}.}
+  \label{fig:overall}
+\end{figure}
+
+Fig.~\ref{fig:overall} makes the central comparison readable without hiding the long table. Pattern-only TShape-Zero reaches \PatternMacroPoint{}/\PatternMacroEvent{} macro \pfone{}/\efone{}. Adding the guard raises the result to \FinalMacroPoint{}/\FinalMacroEvent{}, a gain of 0.044/0.032. TimesFM is the strongest official checkpoint on macro \pfone{} at 0.857 and obtains 0.733 macro \efone{}; \method{} is 0.012 lower on \pfone{} and effectively tied at the reported three-decimal \efone{} precision. Rolling median remains a serious deployment control at 0.839/0.734. Thus, the result supports a compact and inspectable TShape upgrade, not universal superiority.
+
+The per-dataset cells expose complementary regimes. \method{} ranks first among N/F/S methods on Yahoo for both metrics, while the Pattern-only checkpoint ranks first on NAB. TimesFM is strongest on several AIOPS, TODS, and WSD cells; spectral residual leads UCR \pfone{}, whereas persistence leads UCR \efone{}. This heterogeneity is precisely why an out-of-the-box product must retain channel evidence and why average-only claims would be unsafe.
+
+\textbf{Answer to RQ1.}
+One strict \method{} checkpoint provides full six-dataset coverage and is competitive with checkpoints thousands of times larger. It substantially repairs Pattern-only TShape, but strong foundation and residual controls still win particular targets and metrics.
+
+\subsection{RQ2: Pattern Bank Effectiveness}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_pattern_training.pdf}
+  \caption{Pattern Bank optimization from 10\% to 100\%. (a) Training trajectories and their cross-size envelope. (b) Best training MSE against the nested number of generated windows. Every size uses the same generator mixture and seed.}
+  \label{fig:pattern-training}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_pattern_effect.pdf}
+  \caption{Pattern Bank size sweep on all six datasets, arranged as two rows of three panels. Dotted curves are the neural Pattern-only channel; solid curves are the same checkpoints after the fixed Residual Guard. Every point is a full-series \pfone{} or \efone{} evaluation; labeled panel-specific ranges expose within-target change without implying cross-panel scale equality.}
+  \label{fig:pattern-effect}
+\end{figure}
+
+The size sweep uses strict nested prefixes of one generated stream: 10\% contains 6,000 windows and each step adds 6,000 until the 60,000-window bank is complete. Generator identities, random seed, incident rate, optimizer, maximum epochs, and stopping rule remain fixed. Consequently, Fig.~\ref{fig:pattern-training} measures additional generated evidence rather than an order-dependent addition of hand-selected pattern families.
+
+Training loss and target F1 answer different questions. More generated windows constrain continuation on the Pattern Bank, so optimization should improve or saturate. An unseen benchmark, however, is never consulted when choosing bank size; its F1 may fluctuate because additional synthetic variation can help one target and dilute another. Fig.~\ref{fig:pattern-effect} therefore reports every measured endpoint rather than smoothing the curve into artificial monotonicity. The 100\% checkpoint is the release model because it realizes the predeclared full-diversity curriculum, not because target labels selected a favorable fraction.
+
+The measured curves make this boundary concrete. Best training MSE falls from 0.0674 with 6,000 windows to 0.0237 with 60,000, a 64.8\% reduction, and the slope visibly flattens after 48,000 windows. Across targets, Pattern-only macro \pfone{}/\efone{} starts at 0.797/0.696, reaches 0.804/0.703 at 60\%, and finishes at 0.802/0.701. The additional bank evidence is clearest on TODS (0.673 to 0.694 \pfone{}) and UCR (0.617 to 0.637), while already saturated or mismatched targets show smaller reversals. After the fixed guard, all ten checkpoints lie in the narrow 0.845--0.846 \pfone{} and 0.733--0.735 \efone{} bands. Thus the bank improves the learned synthetic objective and selected transfer regimes, while the guard converts target-specific fluctuations into a stable release envelope.
+
+The six panels also separate learning from fallback behavior. A movement in a dotted curve is attributable to the checkpoint. A smaller movement in the corresponding solid curve means that the fixed guard absorbs neural instability; a larger movement means that newly learned shape evidence complements the guard. This distinction prevents the Pattern Bank claim from borrowing gains produced by residual channels.
+
+\textbf{Answer to RQ2.}
+The Pattern Bank supplies measurable zero-shot shape evidence under a benchmark-independent training contract. Increasing generated coverage sharply improves and then saturates the training objective, but target F1 is not guaranteed to be monotone. The fixed guard reduces the operational cost of that residual transfer variance; the 100\% release is selected by coverage policy, not target-label performance.
+
+\subsection{RQ3: Residual Guard Effectiveness}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_guard_violin.pdf}
+  \caption{Paired series-level lift of \method{} over Pattern-only TShape (purple) and over the exactly matched residual-only guard (gold). Violin density, interquartile bar, and median expose both average repair and harmed series.}
+  \label{fig:guard-violin}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_guard_bars.pdf}
+  \caption{Dataset-level decomposition for Pattern-only, guard-only, and final \method{}. The neural comparison isolates repair; the matched-guard comparison isolates TShape's marginal contribution.}
+  \label{fig:guard-bars}
+\end{figure}
+
+Figs.~\ref{fig:guard-violin} and~\ref{fig:guard-bars} separate algorithmic contribution from engineering protection. Relative to Pattern-only TShape, final fusion improves macro \pfone{} by 0.044 and macro \efone{} by 0.032. Point-F1 gains are positive with bootstrap intervals above zero on AIOPS, TODS, UCR, WSD, and Yahoo; Yahoo gains 0.113/0.118 in paired mean \pfone{}/\efone{}. NAB is already saturated and its small Event-F1 change is negative.
+
+The stricter comparator is the guard itself. Guard-only obtains \GuardMacroPoint{}/\GuardMacroEvent{}, versus \FinalMacroPoint{}/\FinalMacroEvent{} for final fusion. Their macro \pfone{} values are effectively equal, while TShape adds 0.007 macro \efone{}. At series level, the Event-F1 intervals are positive on AIOPS, WSD, and Yahoo; UCR remains a failure boundary. This is a bounded but nonzero neural contribution: the guard supplies most of the reliability floor, while learned repeated-shape evidence improves selected event regimes.
+
+\input{generated/easytsad_paired_table.tex}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_guard_ablation.pdf}
+  \caption{Residual Guard ablations over six-dataset macro \pfone{} and \efone{}. The sweep varies neural budget $\alpha$, score normalization, and pairwise evidence channels while holding the strict Pattern checkpoint fixed.}
+  \label{fig:guard-ablation}
+\end{figure}
+
+The ablation in Fig.~\ref{fig:guard-ablation} tests whether Eq.~\eqref{eq:fusion} is merely a renamed residual ensemble. The endpoints $\alpha=0$ and $\alpha=1$ are guard-only and Pattern-only. The release obtains \FinalMacroPoint{}/\FinalMacroEvent{} at $\alpha=0.15$; guard-only obtains \GuardMacroPoint{}/\GuardMacroEvent{}. Thus the guard is marginally higher in macro \pfone{}, while 0.15 is higher in macro \efone{}. Raising the neural budget to 0.50 reduces the scores to 0.785/0.623, showing why residual-first weighting is necessary. TShape+median and TShape+spectral reach only 0.792/0.645 and 0.759/0.538, so no single guard component explains the final result. Rank-normalized 0.15 fusion reaches 0.745/0.588, confirming that the documented min--max score contract is consequential. The release keeps $\alpha=0.15$ as a conservative, predeclared reliability budget; we do not relabel it as universally target-optimal.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_channel_attribution.pdf}
+  \caption{EasyTSAD channel attribution over paired valid series. (a) Stacked bars identify the strongest individual evidence channel; diamonds show how often final fusion beats the exactly matched guard. (b) Bubble size and color encode the Spearman association between four unlabeled KPI traits and final fusion gain. This is a diagnostic, not a target-trained gate.}
+  \label{fig:channel-attribution}
+\end{figure}
+
+Fig.~\ref{fig:channel-attribution} asks a stricter question than a favorable case study: can one explain when the neural channel adds value? Panel (a) compares Pattern-only TShape with median, spectral, and combined-guard evidence on every paired valid series, then reports the final fusion win rate against that same guard. Panel (b) relates the paired mean of Point-F1 and Event-F1 gains to anomaly ratio, trend, periodicity, and roughness. The traits are computed only after scores are frozen and are never used for checkpoint or weight selection. Their associations are descriptive rather than a learned target gate; weak or conflicting cells are themselves evidence that channel attribution should be returned to the operator instead of being replaced by an opaque universal routing rule.
+
+\textbf{Answer to RQ3.}
+The Residual Guard is responsible for most average robustness, and the paper states that fact directly. TShape remains useful where repeated local/global shape evidence improves event ranking beyond the matched guard, especially on AIOPS, WSD, and Yahoo; it is not indispensable on every KPI.
+
+\subsection{RQ4: Effectiveness, Footprint, and Learned Behavior}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_effectiveness_bubble.pdf}
+  \caption{Effectiveness--distribution frontier for strict frozen checkpoints. Position is checkpoint footprint versus mean macro F1; bubble area encodes macro \efone{}. Upper left is preferable.}
+  \label{fig:effectiveness}
+\end{figure}
+
+Fig.~\ref{fig:effectiveness} combines effectiveness with release cost. The \method{} checkpoint is 0.138 MiB, compared with 33.0 MiB for Chronos, 321.0 MiB for Timer, 489.6 MiB for Sundial, and 882.3 MiB for TimesFM. TimesFM's macro advantage is 0.012 \pfone{} and less than 0.001 \efone{}, while its distributed checkpoint is over 6,000 times larger. The final Pattern model trains in 128 seconds; dense stride-one inference over all 834 series and 15.1 million aligned points takes 291 seconds on the study MPS device. Footprint is not latency, but it directly affects artifact transfer, cold start, versioning, and edge placement. Runtime metadata remain available separately so the bubble plot does not pretend that heterogeneous foundation-model hardware timings are architecture-only effects.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_strict_attention.pdf}
+  \caption{Mechanism trace for the frozen checkpoint on top-ranked points from the real deployment case: incident contexts, global patch attention, local/global fusion gate, and grouped local attention. Attention is descriptive evidence, not a causal explanation.}
+  \label{fig:attention}
+\end{figure}
+
+Fig.~\ref{fig:attention} verifies that the released neural channel is active rather than a dead weight in the residual ensemble. On the top-ranked incident contexts, global attention connects nonadjacent patches while the fusion gate varies across patches and channels. The local map emphasizes repeated within-patch structure. These traces establish input-dependent execution and support debugging; they do not prove that an attention coefficient caused a correct alarm.
+
+\textbf{Answer to RQ4.}
+\method{} occupies a favorable compact-checkpoint region and exposes internal and residual evidence through one scorer. Its efficiency claim is distribution footprint and full-series executability, not an unsupported universal latency claim.
+
+\subsection{Threats to Validity}
+
+\textbf{Construct validity.}
+Point adjustment can reward long events~\cite{kim2022rigorous}. We use it because the original TShape claim uses EasyTSAD, pair it with logarithmic event weighting, and apply the exact same implementation to every score stream. Both metrics select thresholds with labels and therefore evaluate score separability, not an online alarm policy.
+
+\textbf{Internal validity.}
+One fixed seed makes the full sweep reproducible and computationally tractable but cannot quantify optimizer-seed variance. Series-level bootstrap intervals quantify target heterogeneity only. Official foundation checkpoints and no-fit controls are ranked separately from adapters, source adaptation, and target-context diagnostics. The Pattern Bank checkpoint metadata states that no benchmark values or labels enter weight fitting.
+
+\textbf{Baseline validity.}
+Four foundation rows use released checkpoints directly. Many anomaly families lack an equivalent frozen univariate interface; their X rows are executable family adapters, not claims of official reproduction. Unknown overlap between public benchmarks and foundation pretraining corpora may advantage those checkpoints. TimeMoE is omitted under the predeclared runtime rule rather than completed on a biased subset.
+
+\textbf{External and deployment validity.}
+The six families span industrial Internet-service KPIs, Web-service monitoring, public cloud streams, controlled anomalies, and rare-event archives, but remain univariate historical benchmarks. Proprietary multivariate and causal streaming settings may differ. Per-history score normalization uses the complete batch; online deployment requires a rolling or source-calibrated transform. The web case is illustrative and selected after the aggregate protocol was frozen, so it is not used as independent effectiveness evidence.

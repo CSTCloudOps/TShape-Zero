@@ -1,0 +1,42 @@
+[
+  {
+    "method": "TimerPatchAdapter",
+    "model": "thuml/timer-base-84m faithful patch-forecast adapter",
+    "seconds": 17.480600833892822,
+    "eval_series": 834,
+    "seed": 20260704,
+    "adapter_kind": "faithful-local-forecast-residual"
+  },
+  {
+    "method": "TimesFMTrendAdapter",
+    "model": "google-research/timesfm faithful trend-decoder adapter",
+    "seconds": 8.511493682861328,
+    "eval_series": 834,
+    "seed": 20260704,
+    "adapter_kind": "faithful-local-forecast-residual"
+  },
+  {
+    "method": "SundialProbAdapter",
+    "model": "thuml/sundial-base-128m faithful probabilistic adapter",
+    "seconds": 28.461588859558105,
+    "eval_series": 834,
+    "seed": 20260704,
+    "adapter_kind": "faithful-local-forecast-residual"
+  },
+  {
+    "method": "TimeMixerAdapter",
+    "model": "kwuking/TimeMixer faithful multi-scale forecast residual adapter",
+    "seconds": 13.820557832717896,
+    "eval_series": 834,
+    "seed": 20260704,
+    "adapter_kind": "faithful-local-forecast-residual"
+  },
+  {
+    "method": "TimeMoEAdapter",
+    "model": "Time-MoE/Time-MoE faithful mixture-of-experts forecast residual adapter",
+    "seconds": 26.040892839431763,
+    "eval_series": 834,
+    "seed": 20260704,
+    "adapter_kind": "faithful-local-forecast-residual"
+  }
+]

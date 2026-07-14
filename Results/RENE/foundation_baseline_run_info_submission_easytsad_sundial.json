@@ -1,0 +1,13 @@
+[
+  {
+    "method": "Sundial-base-128m",
+    "model": "thuml/sundial-base-128m",
+    "load_seconds": 1.5425622463226318,
+    "context_length": 720,
+    "prediction_length": 720,
+    "batch_size": 32,
+    "seed": 20260704,
+    "device": "cpu",
+    "local_files_only": true
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "method": "Chronos-Bolt-Tiny",
+    "model": "amazon/chronos-bolt-tiny",
+    "load_seconds": 2.392483711242676,
+    "context_length": 64,
+    "prediction_length": 64,
+    "batch_size": 64,
+    "seed": 20260704
+  }
+]

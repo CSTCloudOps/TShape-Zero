@@ -1,0 +1,10 @@
+{
+  "artifact": "tshape_zero_plus_release.pt",
+  "bytes": 145215,
+  "sha256": "31f6344995812a5ef0a248e630061fbef05b471920b20845bdcdc060bad8bb4d",
+  "strict_zero_shot": true,
+  "training_corpus": "synthetic Pattern Bank only",
+  "seed": 20260704,
+  "pattern_bank_windows": 60000,
+  "fusion_alpha": 0.15
+}

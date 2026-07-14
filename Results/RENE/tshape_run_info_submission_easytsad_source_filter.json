@@ -1,0 +1,230 @@
+[
+  {
+    "seconds": 17.646339178085327,
+    "windows": 60000,
+    "source_counts": {
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 16,
+      "pattern_bank_fraction_pct": 10,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.023659273503224054,
+      0.01785941530863444,
+      0.017456814321875572,
+      0.01684663288593292,
+      0.016814756457010905
+    ],
+    "filter_source_anomalies": true,
+    "seed": 20260704,
+    "target": "AIOPS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 33.487967014312744,
+    "eval_series": 29
+  },
+  {
+    "seconds": 16.97298312187195,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 16,
+      "pattern_bank_fraction_pct": 10,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.02329196292658647,
+      0.018553714154163996,
+      0.017773179833094278,
+      0.017498819623390834,
+      0.016822434440255166
+    ],
+    "filter_source_anomalies": true,
+    "seed": 20260704,
+    "target": "NAB",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "TODS",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 1.6648969650268555,
+    "eval_series": 10
+  },
+  {
+    "seconds": 19.21740484237671,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 16,
+      "pattern_bank_fraction_pct": 10,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.023526429759462675,
+      0.01797420069873333,
+      0.01746866669356823,
+      0.01680351676642895,
+      0.01671204969982306
+    ],
+    "filter_source_anomalies": true,
+    "seed": 20260704,
+    "target": "TODS",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "UCR",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 1.0880701541900635,
+    "eval_series": 15
+  },
+  {
+    "seconds": 19.6527841091156,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_WSD": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 16,
+      "pattern_bank_fraction_pct": 10,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.032039016692340376,
+      0.01667006302177906,
+      0.015420223448673885,
+      0.015070350814362367,
+      0.014645272760589918
+    ],
+    "filter_source_anomalies": true,
+    "seed": 20260704,
+    "target": "UCR",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "WSD",
+      "Yahoo"
+    ],
+    "eval_seconds": 105.96484994888306,
+    "eval_series": 203
+  },
+  {
+    "seconds": 19.891499042510986,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_Yahoo": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 16,
+      "pattern_bank_fraction_pct": 10,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.0215968224187692,
+      0.017969477308293184,
+      0.017143235215047996,
+      0.017237053177754084,
+      0.017207553467154503
+    ],
+    "filter_source_anomalies": true,
+    "seed": 20260704,
+    "target": "WSD",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "Yahoo"
+    ],
+    "eval_seconds": 93.80966305732727,
+    "eval_series": 210
+  },
+  {
+    "seconds": 20.310181856155396,
+    "windows": 60000,
+    "source_counts": {
+      "source_AIOPS": 9000,
+      "source_NAB": 9000,
+      "source_TODS": 9000,
+      "source_UCR": 9000,
+      "source_WSD": 9000,
+      "pattern_bank_windows": 15000,
+      "pattern_bank_prototypes": 16,
+      "pattern_bank_fraction_pct": 10,
+      "pattern_bank_version": "normal-motif-v2",
+      "source_windows": 45000,
+      "synthetic_windows": 15000,
+      "synthetic_ratio_pct": 25
+    },
+    "loss": [
+      0.021043390875061352,
+      0.0160270478092134,
+      0.01582979566156864,
+      0.01543792111078898,
+      0.014943557745466629
+    ],
+    "filter_source_anomalies": true,
+    "seed": 20260704,
+    "target": "Yahoo",
+    "method": "TShape-zero_pattern_balanced",
+    "sources": [
+      "AIOPS",
+      "NAB",
+      "TODS",
+      "UCR",
+      "WSD"
+    ],
+    "eval_seconds": 11.957604169845581,
+    "eval_series": 367
+  }
+]

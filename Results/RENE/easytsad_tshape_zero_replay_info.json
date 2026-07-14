@@ -1,0 +1,10 @@
+{
+  "score_root": "Results/Scores/TShapeZero/zero_shot_easytsad",
+  "protocols": [
+    "PointF1PA()",
+    "EventF1PA(mode=\"log\")"
+  ],
+  "series_rows": 7506,
+  "source_scores": "post-warm-up direct TShape-Zero archive",
+  "variant_replay": "reconstructed p=16 warm-up with the archived minimum score"
+}

@@ -1,0 +1,6 @@
+method,source_method,footprint_bytes,footprint_mib,footprint_scope
+TShape-Zero+,TShape-zero_plus,145215,0.138488,released checkpoint
+Chronos-Bolt-Tiny,Chronos-Bolt-Tiny,34623512,33.019554,downloaded checkpoint cache
+Timer-base-84M,Timer-base-84m,336620240,321.026077,downloaded checkpoint cache
+Sundial-base-128M,Sundial-base-128m,513389880,489.606743,downloaded checkpoint cache
+TimesFM-2.5-200M,TimesFM-2.5-200M,925181619,882.321948,downloaded checkpoint cache

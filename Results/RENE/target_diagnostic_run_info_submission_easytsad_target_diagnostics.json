@@ -1,0 +1,362 @@
+[
+  {
+    "seconds": 1.9437470436096191,
+    "windows": 3712,
+    "source_counts": {
+      "AIOPS": 3712
+    },
+    "loss": [
+      0.03983709614338546,
+      0.013350356177523219,
+      0.005679055871763106
+    ],
+    "seed": 20260704,
+    "target": "AIOPS",
+    "method": "TShape-target_diag_diff1_p16",
+    "variant": "diff1_p16",
+    "p": 16,
+    "diff_order": 1,
+    "eval_seconds": 182.70803475379944,
+    "eval_series": 29
+  },
+  {
+    "seconds": 0.7637159824371338,
+    "windows": 1280,
+    "source_counts": {
+      "NAB": 1280
+    },
+    "loss": [
+      0.05122342258691788,
+      0.021205430291593073,
+      0.0224777989089489
+    ],
+    "seed": 20260704,
+    "target": "NAB",
+    "method": "TShape-target_diag_diff1_p16",
+    "variant": "diff1_p16",
+    "p": 16,
+    "diff_order": 1,
+    "eval_seconds": 5.260409116744995,
+    "eval_series": 10
+  },
+  {
+    "seconds": 1.1153790950775146,
+    "windows": 1920,
+    "source_counts": {
+      "TODS": 1920
+    },
+    "loss": [
+      0.07354147136211395,
+      0.026039811223745345,
+      0.02331645358353853
+    ],
+    "seed": 20260704,
+    "target": "TODS",
+    "method": "TShape-target_diag_diff1_p16",
+    "variant": "diff1_p16",
+    "p": 16,
+    "diff_order": 1,
+    "eval_seconds": 5.18488621711731,
+    "eval_series": 15
+  },
+  {
+    "seconds": 15.218363046646118,
+    "windows": 25984,
+    "source_counts": {
+      "UCR": 25984
+    },
+    "loss": [
+      0.018617806800186928,
+      0.0069248897523568765,
+      0.006441575468155404
+    ],
+    "seed": 20260704,
+    "target": "UCR",
+    "method": "TShape-target_diag_diff1_p16",
+    "variant": "diff1_p16",
+    "p": 16,
+    "diff_order": 1,
+    "eval_seconds": 510.31790113449097,
+    "eval_series": 203
+  },
+  {
+    "seconds": 15.93656611442566,
+    "windows": 26880,
+    "source_counts": {
+      "WSD": 26880
+    },
+    "loss": [
+      0.012364778687645283,
+      0.001954714133448544,
+      0.001754857359143595
+    ],
+    "seed": 20260704,
+    "target": "WSD",
+    "method": "TShape-target_diag_diff1_p16",
+    "variant": "diff1_p16",
+    "p": 16,
+    "diff_order": 1,
+    "eval_seconds": 261.0958950519562,
+    "eval_series": 210
+  },
+  {
+    "seconds": 20.20474123954773,
+    "windows": 30000,
+    "source_counts": {
+      "Yahoo": 30080
+    },
+    "loss": [
+      0.019728005502621333,
+      0.00794617191652457,
+      0.007366501759489378
+    ],
+    "seed": 20260704,
+    "target": "Yahoo",
+    "method": "TShape-target_diag_diff1_p16",
+    "variant": "diff1_p16",
+    "p": 16,
+    "diff_order": 1,
+    "eval_seconds": 22.65539813041687,
+    "eval_series": 367
+  },
+  {
+    "seconds": 2.0914700031280518,
+    "windows": 3712,
+    "source_counts": {
+      "AIOPS": 3712
+    },
+    "loss": [
+      0.017493128343003577,
+      0.0036000035430208363,
+      0.001941591428978176
+    ],
+    "seed": 20260704,
+    "target": "AIOPS",
+    "method": "TShape-target_diag_raw_p16",
+    "variant": "raw_p16",
+    "p": 16,
+    "diff_order": 0,
+    "eval_seconds": 224.59525990486145,
+    "eval_series": 29
+  },
+  {
+    "seconds": 1.0190341472625732,
+    "windows": 1280,
+    "source_counts": {
+      "NAB": 1280
+    },
+    "loss": [
+      0.03995894193649292,
+      0.015948165208101273,
+      0.009441006369888783
+    ],
+    "seed": 20260704,
+    "target": "NAB",
+    "method": "TShape-target_diag_raw_p16",
+    "variant": "raw_p16",
+    "p": 16,
+    "diff_order": 0,
+    "eval_seconds": 5.61625599861145,
+    "eval_series": 10
+  },
+  {
+    "seconds": 1.269719123840332,
+    "windows": 1920,
+    "source_counts": {
+      "TODS": 1920
+    },
+    "loss": [
+      0.12398455093304316,
+      0.035700149834156036,
+      0.03127338383346796
+    ],
+    "seed": 20260704,
+    "target": "TODS",
+    "method": "TShape-target_diag_raw_p16",
+    "variant": "raw_p16",
+    "p": 16,
+    "diff_order": 0,
+    "eval_seconds": 5.395756959915161,
+    "eval_series": 15
+  },
+  {
+    "seconds": 17.09326481819153,
+    "windows": 25984,
+    "source_counts": {
+      "UCR": 25984
+    },
+    "loss": [
+      0.015632616993718842,
+      0.002211202372994109,
+      0.002051993234202339
+    ],
+    "seed": 20260704,
+    "target": "UCR",
+    "method": "TShape-target_diag_raw_p16",
+    "variant": "raw_p16",
+    "p": 16,
+    "diff_order": 0,
+    "eval_seconds": 512.6285150051117,
+    "eval_series": 203
+  },
+  {
+    "seconds": 14.691541910171509,
+    "windows": 26880,
+    "source_counts": {
+      "WSD": 26880
+    },
+    "loss": [
+      0.00777476515310506,
+      0.001388626315608798,
+      0.0014998746570199727
+    ],
+    "seed": 20260704,
+    "target": "WSD",
+    "method": "TShape-target_diag_raw_p16",
+    "variant": "raw_p16",
+    "p": 16,
+    "diff_order": 0,
+    "eval_seconds": 260.2831120491028,
+    "eval_series": 210
+  },
+  {
+    "seconds": 17.115160942077637,
+    "windows": 30000,
+    "source_counts": {
+      "Yahoo": 30080
+    },
+    "loss": [
+      0.01634046055773894,
+      0.005416562009106079,
+      0.0053319821320474145
+    ],
+    "seed": 20260704,
+    "target": "Yahoo",
+    "method": "TShape-target_diag_raw_p16",
+    "variant": "raw_p16",
+    "p": 16,
+    "diff_order": 0,
+    "eval_seconds": 21.619447946548462,
+    "eval_series": 367
+  },
+  {
+    "seconds": 5.759739875793457,
+    "windows": 3712,
+    "source_counts": {
+      "AIOPS": 3712
+    },
+    "loss": [
+      0.03572759674540881,
+      0.011307139029919073,
+      0.005300218881718044
+    ],
+    "seed": 20260704,
+    "target": "AIOPS",
+    "method": "TShape-target_diag_diff1_p32",
+    "variant": "diff1_p32",
+    "p": 32,
+    "diff_order": 1,
+    "eval_seconds": 455.282023191452,
+    "eval_series": 29
+  },
+  {
+    "seconds": 1.9886960983276367,
+    "windows": 1280,
+    "source_counts": {
+      "NAB": 1280
+    },
+    "loss": [
+      0.04310988485813141,
+      0.01541147343814373,
+      0.016774144023656845
+    ],
+    "seed": 20260704,
+    "target": "NAB",
+    "method": "TShape-target_diag_diff1_p32",
+    "variant": "diff1_p32",
+    "p": 32,
+    "diff_order": 1,
+    "eval_seconds": 10.36634874343872,
+    "eval_series": 10
+  },
+  {
+    "seconds": 2.943100929260254,
+    "windows": 1920,
+    "source_counts": {
+      "TODS": 1920
+    },
+    "loss": [
+      0.06600512862205506,
+      0.028214623779058458,
+      0.016731514657537142
+    ],
+    "seed": 20260704,
+    "target": "TODS",
+    "method": "TShape-target_diag_diff1_p32",
+    "variant": "diff1_p32",
+    "p": 32,
+    "diff_order": 1,
+    "eval_seconds": 10.11630892753601,
+    "eval_series": 15
+  },
+  {
+    "seconds": 42.66656279563904,
+    "windows": 25984,
+    "source_counts": {
+      "UCR": 25984
+    },
+    "loss": [
+      0.017335091024784033,
+      0.007211670552476727,
+      0.006609796521166716
+    ],
+    "seed": 20260704,
+    "target": "UCR",
+    "method": "TShape-target_diag_diff1_p32",
+    "variant": "diff1_p32",
+    "p": 32,
+    "diff_order": 1,
+    "eval_seconds": 1103.1415529251099,
+    "eval_series": 203
+  },
+  {
+    "seconds": 47.920592308044434,
+    "windows": 26880,
+    "source_counts": {
+      "WSD": 26880
+    },
+    "loss": [
+      0.010666428027408463,
+      0.0021433501016525996,
+      0.001862325282057836
+    ],
+    "seed": 20260704,
+    "target": "WSD",
+    "method": "TShape-target_diag_diff1_p32",
+    "variant": "diff1_p32",
+    "p": 32,
+    "diff_order": 1,
+    "eval_seconds": 585.954302072525,
+    "eval_series": 210
+  },
+  {
+    "seconds": 51.38304615020752,
+    "windows": 30000,
+    "source_counts": {
+      "Yahoo": 30080
+    },
+    "loss": [
+      0.015782772220174473,
+      0.006290606120725473,
+      0.00569945335611701
+    ],
+    "seed": 20260704,
+    "target": "Yahoo",
+    "method": "TShape-target_diag_diff1_p32",
+    "variant": "diff1_p32",
+    "p": 32,
+    "diff_order": 1,
+    "eval_seconds": 45.09224987030029,
+    "eval_series": 367
+  }
+]
