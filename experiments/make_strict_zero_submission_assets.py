@@ -14,7 +14,6 @@ from typing import Iterable, Mapping, Sequence
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import spearmanr
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -920,24 +919,7 @@ def draw_channel_attribution(detail: Sequence[Mapping[str, str]]) -> None:
         writer.writeheader()
         writer.writerows(summary_rows)
 
-    feature_specs = (
-        ("Anomaly ratio", "anomaly_ratio"),
-        ("Trend", "trend_strength"),
-        ("Periodicity", "periodicity"),
-        ("Roughness", "roughness"),
-    )
-    groups = DATASETS + ("All",)
-    correlations = np.full((len(feature_specs), len(groups)), np.nan, dtype=float)
-    for group_index, group in enumerate(groups):
-        selected = records if group == "All" else [record for record in records if record["dataset"] == group]
-        gains = np.asarray([record["final_gain_vs_guard"] for record in selected], dtype=float)
-        for feature_index, (_display, field) in enumerate(feature_specs):
-            values = np.asarray([record[field] for record in selected], dtype=float)
-            finite = np.isfinite(values) & np.isfinite(gains)
-            if int(np.sum(finite)) >= 5 and np.unique(values[finite]).size > 1:
-                correlations[feature_index, group_index] = float(spearmanr(values[finite], gains[finite]).statistic)
-
-    fig, (bars, heat) = plt.subplots(
+    fig, (bars, gain_ax) = plt.subplots(
         2, 1, figsize=(3.5, 3.65), gridspec_kw={"height_ratios": (1.05, 1.0), "hspace": 0.90}
     )
     x = np.arange(len(DATASETS))
@@ -964,32 +946,50 @@ def draw_channel_attribution(detail: Sequence[Mapping[str, str]]) -> None:
         columnspacing=0.55, handletextpad=0.25,
     )
 
-    for feature_index in range(len(feature_specs)):
-        for group_index in range(len(groups)):
-            value = correlations[feature_index, group_index]
-            if not np.isfinite(value):
-                continue
-            color = COLORS["teal"] if value >= 0 else COLORS["coral"]
-            heat.scatter(
-                group_index, feature_index, s=20 + 300 * abs(value), color=color,
-                alpha=0.80, edgecolor="white", linewidth=0.45,
-            )
-            heat.text(
-                group_index, feature_index, f"{value:+.2f}", ha="center", va="center",
-                fontsize=4.8, weight="bold",
-                color="white" if abs(value) > 0.24 else COLORS["ink"],
-            )
-    heat.set_xticks(range(len(groups)), groups, rotation=24, ha="right")
-    heat.set_yticks(range(len(feature_specs)), [display for display, _field in feature_specs])
-    heat.set_xlim(-0.55, len(groups) - 0.45)
-    heat.set_ylim(len(feature_specs) - 0.55, -0.55)
-    heat.spines[:].set_visible(False)
-    heat.tick_params(length=0)
-    heat.set_title(r"(b) KPI trait vs. neural marginal gain (Spearman $\rho$)", loc="left", weight="bold")
-    heat.text(
-        0.99, -0.27, "teal: positive   coral: negative", transform=heat.transAxes,
-        ha="right", fontsize=5.2, color=COLORS["muted"],
-    )
+    point_colors = {label: color for label, color in zip(labels, channel_colors)}
+    jitter_rng = np.random.default_rng(SEED + 12)
+    bootstrap_rng = np.random.default_rng(SEED + 13)
+    for dataset_index, dataset in enumerate(DATASETS):
+        selected = sorted(
+            (record for record in records if record["dataset"] == dataset),
+            key=lambda record: str(record["series"]),
+        )
+        gains = np.asarray([record["final_gain_vs_guard"] for record in selected], dtype=float)
+        jitter = jitter_rng.uniform(-0.25, 0.25, gains.size)
+        gain_ax.scatter(
+            dataset_index + jitter,
+            gains,
+            s=7.5,
+            color=[point_colors[str(record["best_evidence_channel"])] for record in selected],
+            alpha=0.42,
+            edgecolor="none",
+            zorder=2,
+        )
+        mean = float(np.mean(gains))
+        draws = bootstrap_rng.choice(gains, size=(2000, gains.size), replace=True).mean(axis=1)
+        low, high = np.quantile(draws, (0.025, 0.975))
+        gain_ax.errorbar(
+            dataset_index,
+            mean,
+            yerr=np.asarray([[mean - low], [high - mean]]),
+            fmt="D",
+            ms=3.8,
+            mfc="white",
+            mec=COLORS["ink"],
+            mew=0.75,
+            ecolor=COLORS["ink"],
+            elinewidth=0.85,
+            capsize=2.0,
+            zorder=4,
+        )
+    gain_ax.axhline(0, color=COLORS["ink"], lw=0.9, ls=(0, (4, 2)), zorder=1)
+    gain_ax.set_xticks(range(len(DATASETS)), DATASETS, rotation=20, ha="right")
+    gain_ax.set_xlim(-0.55, len(DATASETS) - 0.45)
+    gain_ax.set_ylim(-0.61, 0.58)
+    gain_ax.set_ylabel("Fusion gain vs. guard")
+    gain_ax.grid(axis="y", color=COLORS["grid"], lw=0.45)
+    gain_ax.spines[["top", "right"]].set_visible(False)
+    gain_ax.set_title("(b) Per-series neural marginal gain", loc="left", weight="bold")
     fig.subplots_adjust(left=0.23, right=0.99, top=0.98, bottom=0.12)
     save(fig, "fig_strict_channel_attribution")
 
