@@ -459,7 +459,7 @@ def draw_pattern_training(runs: Sequence[Mapping[str, object]]) -> None:
 
 
 def draw_pattern_effect(summaries: Sequence[Mapping[str, str]]) -> None:
-    fig, axes = plt.subplots(2, 3, figsize=(3.5, 2.75), sharex=True)
+    fig, axes = plt.subplots(2, 3, figsize=(3.5, 2.95), sharex=True)
     legend_handles = None
     for ax, dataset in zip(axes.flat, DATASETS):
         subset = [row for row in summaries if row.get("dataset") == dataset]
@@ -474,14 +474,42 @@ def draw_pattern_effect(summaries: Sequence[Mapping[str, str]]) -> None:
         if len(pure) != 10 or len(final) != 10:
             raise RuntimeError(f"Incomplete Pattern Bank curve for {dataset}: {len(pure)}/{len(final)}")
         x = np.array([100 * fnum(row["fraction"]) for row in pure])
+        final_point = np.array([fnum(row["point_f1_pa"]) for row in final])
+        final_event = np.array([fnum(row["event_f1_pa_log"]) for row in final])
+        point_sem = np.array(
+            [
+                fnum(row["point_f1_pa_std"]) / math.sqrt(max(1.0, fnum(row["valid_point_pa_series"])))
+                for row in final
+            ]
+        )
+        event_sem = np.array(
+            [
+                fnum(row["event_f1_pa_log_std"]) / math.sqrt(max(1.0, fnum(row["valid_event_pa_series"])))
+                for row in final
+            ]
+        )
         curves = (
-            (np.array([fnum(row["point_f1_pa"]) for row in final]), COLORS["teal"], "o", "Zero+ Point-F1", "-"),
-            (np.array([fnum(row["event_f1_pa_log"]) for row in final]), COLORS["coral"], "s", "Zero+ Event-F1", "-"),
-            (np.array([fnum(row["point_f1_pa"]) for row in pure]), COLORS["teal"], None, "Pattern Point-F1", ":"),
-            (np.array([fnum(row["event_f1_pa_log"]) for row in pure]), COLORS["coral"], None, "Pattern Event-F1", ":"),
+            (final_point, point_sem, COLORS["teal"], "o", "Zero+ Point-F1", "-"),
+            (final_event, event_sem, COLORS["coral"], "s", "Zero+ Event-F1", "-"),
+            (np.array([fnum(row["point_f1_pa"]) for row in pure]), None, COLORS["teal"], None, "Pattern Point-F1", ":"),
+            (np.array([fnum(row["event_f1_pa_log"]) for row in pure]), None, COLORS["coral"], None, "Pattern Event-F1", ":"),
         )
         all_values = []
-        for values, color, marker, label, linestyle in curves:
+        for values, uncertainty, color, marker, label, linestyle in curves:
+            if uncertainty is not None:
+                lower = np.maximum(0.0, values - uncertainty)
+                upper = np.minimum(1.0, values + uncertainty)
+                ax.fill_between(
+                    x,
+                    lower,
+                    upper,
+                    color=color,
+                    alpha=0.075,
+                    linewidth=0,
+                    zorder=1,
+                )
+                all_values.extend(lower.tolist())
+                all_values.extend(upper.tolist())
             ax.plot(
                 x,
                 values,
@@ -492,15 +520,9 @@ def draw_pattern_effect(summaries: Sequence[Mapping[str, str]]) -> None:
                 ms=2.5,
                 alpha=1.0 if linestyle == "-" else 0.58,
                 label=label,
+                zorder=3 if linestyle == "-" else 2,
             )
             all_values.extend(values.tolist())
-        ax.fill_between(
-            x,
-            np.array([fnum(row["point_f1_pa"]) for row in pure]),
-            np.array([fnum(row["point_f1_pa"]) for row in final]),
-            color=COLORS["teal"],
-            alpha=0.055,
-        )
         lo, hi = min(all_values), max(all_values)
         margin = max(0.025, 0.08 * (hi - lo))
         ax.set_ylim(max(0.0, lo - margin), min(1.005, hi + margin))
@@ -509,7 +531,6 @@ def draw_pattern_effect(summaries: Sequence[Mapping[str, str]]) -> None:
         ax.spines[["top", "right"]].set_visible(False)
         ax.set_title(dataset, pad=2, weight="bold", color=DATASET_COLORS[dataset])
         legend_handles = ax.get_legend_handles_labels()
-    axes[1, 1].set_xlabel("Pattern Bank size (\%)")
     axes[0, 0].set_ylabel("EasyTSAD F1")
     axes[1, 0].set_ylabel("EasyTSAD F1")
     handles, labels = legend_handles
@@ -523,7 +544,8 @@ def draw_pattern_effect(summaries: Sequence[Mapping[str, str]]) -> None:
         columnspacing=0.7,
         handlelength=1.4,
     )
-    fig.subplots_adjust(left=0.11, right=0.99, top=0.96, bottom=0.21, wspace=0.24, hspace=0.28)
+    fig.supxlabel("Pattern Bank size (%)", x=0.55, y=0.175, fontsize=7.0)
+    fig.subplots_adjust(left=0.11, right=0.99, top=0.96, bottom=0.30, wspace=0.24, hspace=0.28)
     save(fig, "fig_strict_pattern_effect")
 
 
