@@ -385,7 +385,7 @@ def draw_pattern_training(runs: Sequence[Mapping[str, object]]) -> None:
         2,
         1,
         figsize=(3.5, 3.12),
-        gridspec_kw={"height_ratios": (2.0, 1.0), "hspace": 0.56},
+        gridspec_kw={"height_ratios": (2.0, 1.0), "hspace": 0.64},
     )
     padded = np.full((len(ordered), max(len(row["loss"]) for row in ordered)), np.nan)
     for index, run in enumerate(ordered):
@@ -397,25 +397,29 @@ def draw_pattern_training(runs: Sequence[Mapping[str, object]]) -> None:
         ax.plot(np.arange(1, len(loss) + 1), loss, color=color, lw=1.0, alpha=0.88, label=label)
         ax.scatter(len(loss), loss[-1], s=8, color=color, edgecolor="white", linewidth=0.3, zorder=3)
     epochs = np.arange(1, padded.shape[1] + 1)
+    cross_size_mean = np.nanmean(padded, axis=0)
+    valid_counts = np.sum(np.isfinite(padded), axis=0)
+    cross_size_sem = np.nanstd(padded, axis=0, ddof=1) / np.sqrt(np.maximum(valid_counts, 1))
+    ax.plot(
+        epochs,
+        cross_size_mean,
+        color=COLORS["teal"],
+        lw=0.85,
+        ls="--",
+        alpha=0.82,
+        zorder=2,
+    )
     ax.fill_between(
         epochs,
-        np.nanmin(padded, axis=0),
-        np.nanmax(padded, axis=0),
+        cross_size_mean - cross_size_sem,
+        cross_size_mean + cross_size_sem,
         color=COLORS["teal"],
-        alpha=0.08,
-        label="cross-size envelope",
+        alpha=0.11,
+        linewidth=0,
+        label="cross-size mean $\pm$ SEM",
     )
     ax.set_ylabel("Training MSE")
-    ax.text(
-        0.985,
-        0.035,
-        "Epoch",
-        transform=ax.transAxes,
-        ha="right",
-        va="bottom",
-        fontsize=5.5,
-        color=COLORS["muted"],
-    )
+    ax.set_xlabel("Epoch", labelpad=1.5)
     ax.grid(axis="y", color=COLORS["grid"], lw=0.55)
     ax.spines[["top", "right"]].set_visible(False)
     ax.legend(frameon=False, ncol=4, loc="upper right", handlelength=1.2, columnspacing=0.55)
@@ -424,8 +428,18 @@ def draw_pattern_training(runs: Sequence[Mapping[str, object]]) -> None:
     sizes = np.array([int(run["fraction_pct"]) for run in ordered])
     best = np.array([float(run["best_training_loss"]) for run in ordered])
     windows = np.array([int(run["windows"]) for run in ordered])
+    late_epoch_sd = np.array(
+        [float(np.std(np.asarray(run["loss"], dtype=float)[-5:], ddof=1)) for run in ordered]
+    )
     endpoint.plot(sizes, best, color=COLORS["purple"], lw=1.35, marker="o", ms=3.2)
-    endpoint.fill_between(sizes, best, np.max(best) * 1.03, color=COLORS["purple"], alpha=0.055)
+    endpoint.fill_between(
+        sizes,
+        np.maximum(0.0, best - late_epoch_sd),
+        best + late_epoch_sd,
+        color=COLORS["purple"],
+        alpha=0.10,
+        linewidth=0,
+    )
     for size, value, count in zip(sizes[[0, -1]], best[[0, -1]], windows[[0, -1]]):
         endpoint.annotate(
             f"{count // 1000}k windows",
@@ -437,7 +451,7 @@ def draw_pattern_training(runs: Sequence[Mapping[str, object]]) -> None:
             color=COLORS["muted"],
         )
     endpoint.set_xticks(np.arange(10, 101, 10))
-    endpoint.set_xlabel("Pattern Bank size (\% of 60k windows)")
+    endpoint.set_xlabel("Pattern Bank size (% of 60k windows)")
     endpoint.set_ylabel("Best MSE")
     endpoint.grid(axis="y", color=COLORS["grid"], lw=0.55)
     endpoint.spines[["top", "right"]].set_visible(False)
