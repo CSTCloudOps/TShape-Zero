@@ -27,6 +27,7 @@ LODO_METHOD = "TShape-zero_shot_balanced"
 PATTERN_METHOD = "TShapeUniversalPattern-100"
 PROPOSED_METHOD = "TShapeUniversalZeroPlus-100"
 GUARD_METHOD = "TShape-zero_plus_pattern_balanced_residual_only_minmax"
+FOCAL_EXCLUDED_METHODS = {"TimesFM-2.5-200M"}
 
 COLORS = {
     "teal": "#007C83",
@@ -973,7 +974,7 @@ def write_latex_assets(ledger_rows: Sequence[Mapping[str, str]]) -> None:
     methods: List[Tuple[str, str, str, str, str]] = []
     seen = set()
     for row in ledger_rows:
-        if row["family"] == "Residual":
+        if row["family"] == "Residual" or row["method_id"] in FOCAL_EXCLUDED_METHODS:
             continue
         method_id = row["method_id"]
         if method_id in seen:
@@ -1002,7 +1003,7 @@ def write_latex_assets(ledger_rows: Sequence[Mapping[str, str]]) -> None:
     lines = [
         r"\begin{table*}[t]",
         r"\centering",
-        r'\caption{Full-coverage non-residual comparison under one EasyTSAD protocol (Point-F1 / Event-F1). Among official frozen foundation checkpoints and strict synthetic-only TShape checkpoints, \textcolor{red}{red bold} and \textcolor{blue}{blue underlined} mark the best and second-best score per metric. Adapter, adaptation, diagnostic, and ablation provenance is retained in the public result ledger.}',
+        r'\caption{Focal non-residual comparison under one EasyTSAD protocol (Point-F1 / Event-F1). Among the displayed official frozen foundation checkpoints and strict synthetic-only TShape checkpoints, \textcolor{red}{red bold} and \textcolor{blue}{blue underlined} mark the best and second-best score per metric. Adapter, adaptation, diagnostic, and ablation provenance is retained in the public result ledger.}',
         r"\label{tab:all-easytsad}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{2.8pt}",

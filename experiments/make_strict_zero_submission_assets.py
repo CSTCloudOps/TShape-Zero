@@ -554,7 +554,6 @@ def draw_overall(ledger: Sequence[Mapping[str, str]]) -> None:
         ("spectral_residual", "Spectral residual"),
         ("Chronos-Bolt-Tiny", "Chronos"),
         ("Timer-base-84m", "Timer"),
-        ("TimesFM-2.5-200M", "TimesFM"),
         ("Sundial-base-128m", "Sundial"),
         (PATTERN, "Pattern-only Zero"),
         (FINAL, "TShape-Zero+"),
@@ -1003,7 +1002,6 @@ def draw_effectiveness_bubble(ledger: Sequence[Mapping[str, str]]) -> None:
         ("TShape-Zero+", FINAL, "TShape-zero_plus", COLORS["purple"]),
         ("Chronos", "Chronos-Bolt-Tiny", "Chronos-Bolt-Tiny", COLORS["teal"]),
         ("Timer", "Timer-base-84m", "Timer-base-84m", COLORS["blue"]),
-        ("TimesFM", "TimesFM-2.5-200M", "TimesFM-2.5-200M", COLORS["coral"]),
         ("Sundial", "Sundial-base-128m", "Sundial-base-128m", COLORS["gold"]),
     )
     fig, ax = plt.subplots(figsize=(3.5, 2.55))
@@ -1011,7 +1009,6 @@ def draw_effectiveness_bubble(ledger: Sequence[Mapping[str, str]]) -> None:
         "TShape-Zero+": (5, 5),
         "Chronos": (5, 7),
         "Timer": (5, 5),
-        "TimesFM": (-5, -13),
         "Sundial": (5, 5),
     }
     for label, method, footprint_id, color in specs:

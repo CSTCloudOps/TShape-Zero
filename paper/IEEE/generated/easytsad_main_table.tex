@@ -1,6 +1,6 @@
 \begin{table*}[t]
 \centering
-\caption{Full-coverage non-residual comparison under one EasyTSAD protocol (Point-F1 / Event-F1). Among official frozen foundation checkpoints and strict synthetic-only TShape checkpoints, \textcolor{red}{red bold} and \textcolor{blue}{blue underlined} mark the best and second-best score per metric. Adapter, adaptation, diagnostic, and ablation provenance is retained in the public result ledger.}
+\caption{Focal non-residual comparison under one EasyTSAD protocol (Point-F1 / Event-F1). Among the displayed official frozen foundation checkpoints and strict synthetic-only TShape checkpoints, \textcolor{red}{red bold} and \textcolor{blue}{blue underlined} mark the best and second-best score per metric. Adapter, adaptation, diagnostic, and ablation provenance is retained in the public result ledger.}
 \label{tab:all-easytsad}
 \scriptsize
 \setlength{\tabcolsep}{2.8pt}
@@ -10,10 +10,9 @@
 \toprule
 Family & Method & AIOPS & NAB & TODS & UCR & WSD & Yahoo \\
 \midrule
-Foundation & Chronos-Bolt-Tiny & 0.889 / 0.786 & 0.998 / 0.881 & 0.646 / 0.521 & 0.628 / 0.324 & 0.969 / 0.893 & \textcolor{blue}{\underline{0.762}} / \textcolor{blue}{\underline{0.739}} \\
- & Timer-base-84M & 0.886 / 0.781 & 0.990 / 0.862 & 0.752 / 0.615 & \textcolor{blue}{\underline{0.689}} / \textcolor{red}{\textbf{0.410}} & 0.963 / 0.890 & 0.731 / 0.699 \\
- & TimesFM-2.5-200M & \textcolor{red}{\textbf{0.896}} / \textcolor{red}{\textbf{0.800}} & 0.997 / 0.875 & \textcolor{red}{\textbf{0.818}} / \textcolor{red}{\textbf{0.688}} & \textcolor{red}{\textbf{0.705}} / \textcolor{blue}{\underline{0.399}} & \textcolor{red}{\textbf{0.971}} / \textcolor{red}{\textbf{0.901}} & 0.756 / 0.736 \\
- & Sundial-base-128M & 0.889 / \textcolor{blue}{\underline{0.792}} & 0.998 / 0.903 & 0.683 / 0.564 & 0.663 / 0.359 & \textcolor{blue}{\underline{0.971}} / \textcolor{blue}{\underline{0.894}} & 0.726 / 0.706 \\
+Foundation & Chronos-Bolt-Tiny & \textcolor{blue}{\underline{0.889}} / \textcolor{blue}{\underline{0.786}} & 0.998 / 0.881 & 0.646 / 0.521 & 0.628 / 0.324 & \textcolor{blue}{\underline{0.969}} / \textcolor{blue}{\underline{0.893}} & \textcolor{blue}{\underline{0.762}} / \textcolor{blue}{\underline{0.739}} \\
+ & Timer-base-84M & 0.886 / 0.781 & 0.990 / 0.862 & \textcolor{blue}{\underline{0.752}} / 0.615 & \textcolor{red}{\textbf{0.689}} / \textcolor{red}{\textbf{0.410}} & 0.963 / 0.890 & 0.731 / 0.699 \\
+ & Sundial-base-128M & 0.889 / \textcolor{red}{\textbf{0.792}} & 0.998 / 0.903 & 0.683 / 0.564 & 0.663 / 0.359 & \textcolor{red}{\textbf{0.971}} / \textcolor{red}{\textbf{0.894}} & 0.726 / 0.706 \\
  & TimerPatch & 0.836 / 0.624 & 0.998 / 0.890 & 0.625 / 0.435 & 0.696 / 0.431 & 0.899 / 0.727 & 0.528 / 0.497 \\
  & TimesFMTrend & 0.660 / 0.315 & 0.990 / 0.776 & 0.727 / 0.506 & 0.585 / 0.181 & 0.410 / 0.156 & 0.384 / 0.335 \\
  & SundialProb & 0.541 / 0.177 & 0.992 / 0.687 & 0.694 / 0.444 & 0.611 / 0.175 & 0.367 / 0.109 & 0.339 / 0.281 \\
@@ -40,8 +39,8 @@ TSAD & ForecastResidual & 0.857 / 0.720 & 0.998 / 0.906 & 0.706 / 0.577 & 0.687 
  & TranAD & 0.692 / 0.349 & 0.990 / 0.745 & 0.448 / 0.233 & 0.514 / 0.333 & 0.738 / 0.416 & 0.379 / 0.357 \\
  & Anomaly Transformer & 0.636 / 0.280 & 0.993 / 0.814 & 0.441 / 0.247 & 0.502 / 0.306 & 0.730 / 0.401 & 0.220 / 0.166 \\
 \midrule
-TShape & Pattern-only TShape-Zero & 0.867 / 0.758 & \textcolor{red}{\textbf{0.999}} / \textcolor{red}{\textbf{0.926}} & 0.694 / 0.622 & 0.637 / 0.380 & 0.951 / 0.869 & 0.666 / 0.651 \\
- & \textbf{TShape-Zero+$^{\star}$} & \textcolor{blue}{\underline{0.895}} / 0.769 & \textcolor{blue}{\underline{0.999}} / \textcolor{blue}{\underline{0.918}} & \textcolor{blue}{\underline{0.766}} / \textcolor{blue}{\underline{0.673}} & 0.669 / 0.396 & 0.967 / 0.873 & \textcolor{red}{\textbf{0.779}} / \textcolor{red}{\textbf{0.769}} \\
+TShape & Pattern-only TShape-Zero & 0.867 / 0.758 & \textcolor{red}{\textbf{0.999}} / \textcolor{red}{\textbf{0.926}} & 0.694 / \textcolor{blue}{\underline{0.622}} & 0.637 / 0.380 & 0.951 / 0.869 & 0.666 / 0.651 \\
+ & \textbf{TShape-Zero+$^{\star}$} & \textcolor{red}{\textbf{0.895}} / 0.769 & \textcolor{blue}{\underline{0.999}} / \textcolor{blue}{\underline{0.918}} & \textcolor{red}{\textbf{0.766}} / \textcolor{red}{\textbf{0.673}} & \textcolor{blue}{\underline{0.669}} / \textcolor{blue}{\underline{0.396}} & 0.967 / 0.873 & \textcolor{red}{\textbf{0.779}} / \textcolor{red}{\textbf{0.769}} \\
  & LODO TShape adaptation & 0.871 / 0.767 & 0.998 / 0.906 & 0.671 / 0.597 & 0.629 / 0.377 & 0.958 / 0.879 & 0.723 / 0.689 \\
  & PB Hybrid & 0.869 / 0.764 & 0.999 / 0.926 & 0.680 / 0.599 & 0.633 / 0.376 & 0.961 / 0.882 & 0.747 / 0.737 \\
  & PB Source-CV & 0.886 / 0.782 & 0.998 / 0.879 & 0.741 / 0.674 & 0.645 / 0.402 & 0.964 / 0.888 & 0.770 / 0.759 \\
