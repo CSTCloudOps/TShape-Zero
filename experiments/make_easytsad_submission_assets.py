@@ -973,6 +973,8 @@ def write_latex_assets(ledger_rows: Sequence[Mapping[str, str]]) -> None:
     methods: List[Tuple[str, str, str, str, str]] = []
     seen = set()
     for row in ledger_rows:
+        if row["family"] == "Residual":
+            continue
         method_id = row["method_id"]
         if method_id in seen:
             continue
@@ -980,16 +982,7 @@ def write_latex_assets(ledger_rows: Sequence[Mapping[str, str]]) -> None:
         methods.append(
             (row["family"], row["method"], method_id, row["status"], row["access"])
         )
-    access_codes = {
-        "No-fit": "N",
-        "Frozen": "F",
-        "Strict": "S",
-        "Adapt": "A",
-        "Adapter": "X",
-        "Target": "T",
-        "Ablation": "B",
-    }
-    rankable_access = {"No-fit", "Frozen", "Strict"}
+    rankable_access = {"Frozen", "Strict"}
     ranks: Dict[Tuple[str, str], Tuple[float, float]] = {}
     for dataset in DATASETS:
         for field in ("point_f1", "event_f1"):
@@ -1009,15 +1002,15 @@ def write_latex_assets(ledger_rows: Sequence[Mapping[str, str]]) -> None:
     lines = [
         r"\begin{table*}[t]",
         r"\centering",
-        r'\caption{Full-coverage comparison under one EasyTSAD protocol (Point-F1 / Event-F1). Access: N=no fit, F=official frozen checkpoint, S=strict synthetic-only checkpoint, A=source adaptation, X=family adapter, T=target-context diagnostic, and B=ablation. Within deployment-comparable N/F/S rows, \textcolor{red}{red bold} and \textcolor{blue}{blue underlined} mark the best and second-best score per metric. Adapter and adaptation rows broaden coverage but are not represented as official frozen checkpoints.}',
+        r'\caption{Full-coverage non-residual comparison under one EasyTSAD protocol (Point-F1 / Event-F1). Among official frozen foundation checkpoints and strict synthetic-only TShape checkpoints, \textcolor{red}{red bold} and \textcolor{blue}{blue underlined} mark the best and second-best score per metric. Adapter, adaptation, diagnostic, and ablation provenance is retained in the public result ledger.}',
         r"\label{tab:all-easytsad}",
         r"\scriptsize",
-        r"\setlength{\tabcolsep}{2.2pt}",
+        r"\setlength{\tabcolsep}{2.8pt}",
         r"\renewcommand{\arraystretch}{0.91}",
         r"\resizebox{\textwidth}{!}{%",
-        r"\begin{tabular}{@{}llccccccc@{}}",
+        r"\begin{tabular}{@{}llcccccc@{}}",
         r"\toprule",
-        r"Family & Method & Access & AIOPS & NAB & TODS & UCR & WSD & Yahoo \\",
+        r"Family & Method & AIOPS & NAB & TODS & UCR & WSD & Yahoo \\",
         r"\midrule",
     ]
     previous_family = None
@@ -1047,7 +1040,7 @@ def write_latex_assets(ledger_rows: Sequence[Mapping[str, str]]) -> None:
                     etext = r"\textcolor{blue}{\underline{" + etext + "}}"
             cells.append(f"{ptext} / {etext}")
         lines.append(
-            f"{family_cell} & {method_cell} & {access_codes[access]} & "
+            f"{family_cell} & {method_cell} & "
             + " & ".join(cells)
             + r" \\"
         )
