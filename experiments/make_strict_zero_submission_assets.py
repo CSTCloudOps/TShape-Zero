@@ -1117,14 +1117,14 @@ def draw_attention() -> None:
     gate = np.mean(captured["gate"], axis=0).reshape(4, 8, 8).mean(axis=2)
     mean_context = np.mean(contexts, axis=0)
 
-    fig, axes = plt.subplots(2, 2, figsize=(3.5, 3.05))
+    fig, axes = plt.subplots(2, 2, figsize=(3.5, 3.16))
     ax = axes[0, 0]
     ax.plot(np.arange(p), mean_context, color=COLORS["teal"], lw=1.35)
     for boundary in range(0, p + 1, 4):
         ax.axvline(boundary - 0.5, color=COLORS["grid"], lw=0.55)
     ax.scatter(np.arange(p), mean_context, s=7, color=COLORS["teal"], edgecolor="white", lw=0.3)
     ax.set_title("(a) Top-5 incident contexts", loc="left", weight="bold")
-    ax.set_xlabel("Context index / four patches")
+    ax.set_xlabel("Context index / four patches", labelpad=1.5)
     ax.set_ylabel("Normalized value")
     ax.spines[["top", "right"]].set_visible(False)
     ax.grid(axis="y", color=COLORS["grid"], lw=0.45)
@@ -1149,24 +1149,15 @@ def draw_attention() -> None:
     axes[1, 0].imshow(gate, cmap="PuBuGn", vmin=0, vmax=1, aspect="auto")
     axes[1, 0].set_xticks(range(8), [f"C{i+1}" for i in range(8)], rotation=45, ha="right")
     axes[1, 0].set_yticks(range(4), [f"P{i+1}" for i in range(4)])
-    axes[1, 0].set_title("(c) Local/global fusion gate", loc="left", weight="bold")
+    axes[1, 0].set_title("(c) Local/global fusion gate", loc="left", weight="bold", pad=5)
     axes[1, 0].tick_params(length=0)
-    axes[1, 0].text(
-        0.5,
-        -0.24,
-        "0 = global   |   1 = local",
-        transform=axes[1, 0].transAxes,
-        ha="center",
-        color=COLORS["muted"],
-        fontsize=5.3,
-    )
 
     axes[1, 1].imshow(local_attention, cmap="YlOrRd", aspect="equal")
     axes[1, 1].set_xticks((0, 3, 7), ("C1", "C4", "C8"))
     axes[1, 1].set_yticks((0, 3, 7), ("C1", "C4", "C8"))
     axes[1, 1].set_title("(d) Grouped local attention", loc="left", weight="bold")
     axes[1, 1].tick_params(length=0)
-    fig.subplots_adjust(left=0.13, right=0.99, top=0.97, bottom=0.11, wspace=0.38, hspace=0.45)
+    fig.subplots_adjust(left=0.13, right=0.99, top=0.97, bottom=0.08, wspace=0.38, hspace=0.68)
     save(fig, "fig_strict_attention")
 
 
